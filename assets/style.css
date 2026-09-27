@@ -396,8 +396,11 @@ a:hover { color: var(--color-primary); }
 .pain { margin-top: var(--space-5); max-width: 46em; }
 .pain__title {
   display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-1) var(--space-2);
-  /* 字号不写死：让 .hero h1 的 --text-5xl 生效，跟被删掉的那句大标题一样大 */
+  /* 字号比 .hero h1 小一档，好让「做货代业务的3大痛！！！」整句排在一行里 */
 }
+/* 这6个字必须整块不断行 */
+.pain__keep { white-space: nowrap; }
+.hero .pain__title { font-size: 36px; }   /* 选择器要比 .hero h1 更具体才盖得住 */
 .pain__num3 { font-size: 1.15em; font-weight: 900; color: var(--color-gray-900); }
 .pain__big {
   font-size: 1.5em; line-height: 1; color: var(--color-accent);
@@ -610,6 +613,7 @@ a.contact__item:hover { background: rgba(255, 255, 255, 0.14); }
 
 @media (max-width: 720px) {
   :root { --text-5xl: 29px; --text-4xl: 25px; --text-3xl: 22px; --text-2xl: 20px; --text-lg: 16px; --text-base: 15px; }
+  .hero .pain__title { font-size: 26px; }   /* 手机上再小一档，「做货代业务的」那6个字才放得下 */
   .topbar__inner { min-height: 58px; gap: var(--space-3); }
   .nav { display: none; }
   .brand__name { font-size: var(--text-sm); white-space: normal; line-height: 1.3; }
