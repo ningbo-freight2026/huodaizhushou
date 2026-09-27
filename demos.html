@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>动态演示 — 货代业务全能辅助小工具</title>
+<meta name="description" content="七段循环动画演示：新建单子与备注、日历到期提醒与置顶打钩、船舶定位、费用单与模板库、按客户做月报对账单、日常随笔待办、自定义查询网址。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23123A5C'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%23D8552B'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="./assets/style.css">
+<link rel="stylesheet" href="./assets/demos.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">跳到主要内容</a>
+
+<header class="topbar">
+  <div class="wrap topbar__inner">
+    <a class="brand" href="./index.html">
+      <span class="brand__mark" aria-hidden="true"></span>
+      <span class="brand__name">货代业务全能辅助小工具</span>
+    </a>
+    <nav class="nav" aria-label="页面导航">
+      <a href="./index.html#features">功能</a>
+      <a href="#d1">新建单子</a>
+      <a href="#d2">到期提醒</a>
+      <a href="#d3">船定位</a>
+      <a href="#d4">费用单</a>
+      <a href="#d5">月报</a>
+      <a href="#d6">随笔</a>
+      <a href="#d7">自定义网址</a>
+    </nav>
+    <a class="btn btn--primary btn--sm" href="./index.html#contact">要一份试用版</a>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="section demo-head">
+    <div class="wrap">
+      <p class="eyebrow">七段循环动画 · 按软件真实操作顺序画的</p>
+      <h1 class="demo-head__title">它会动的样子</h1>
+      <p class="demo-head__lead">
+        下面七段是循环播放的动画，每段都带文字说明，演的就是你平时做单的步骤。
+        画面里的客户名、提单号、金额全是占位示例（金额一律写 123456），不是真实数据。
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ 01 新建单子 + 备注 ============ -->
+  <section class="section section--tint" id="d1">
+    <div class="wrap">
+      <figure class="demo">
+        <figcaption class="demo__cap">
+          <span class="demo__no num">01</span>
+          <h2 class="demo__title">创建要跟的单子，顺手把该记的都记上</h2>
+        </figcaption>
+        <p class="demo__lead">
+          新建一票，客户名填个自己认得的昵称就行；工作编号用公司实际那套编号。
+          进度点自动生成，要交代的事（多家工厂拼柜、提单要分单、装柜地址、shipper 用哪家）全写在备注里。
+        </p>
+
+        <div class="demo__stage">
+          <div class="dm">
+            <div class="dm__bar"><span>工作进度看板</span><span class="dm__count num">共 3 票</span></div>
+            <div class="dm__panes">
+              <div class="dm__L">
+                <div class="dm__search">搜客户 / 提单号 / 目的港</div>
+                <ul class="dm__list">
+                  <li class="rw"><span class="rw__box"></span><span class="chip chip--type">整柜</span><span class="rw__name">阿明</span><span class="rw__right">开船 9.28</span></li>
+                  <li class="rw"><span class="rw__box"></span><span class="chip chip--type">空运</span><span class="rw__name">小陈</span><span class="rw__right">已到港</span></li>
+                  <li class="rw"><span class="rw__box"></span><span class="chip chip--type">拉报</span><span class="rw__name">老王</span><span class="rw__right">订舱 9.25</span></li>
+                  <li class="rw rw--new"><span class="rw__box"></span><span class="chip chip--type">拼箱</span><span class="rw__name">阿明</span><span class="rw__right">装箱 9.30</span></li>
+                </ul>
+              </div>
+              <div class="dm__R">
+                <div class="dm__panehead">新建工作</div>
+                <div class="dm__kv"><i>客户名</i><span class="typed typed--a">阿明</span></div>
+                <div class="dm__kv"><i>类型</i><span class="typed typed--b">拼箱</span></div>
+                <div class="dm__kv"><i>目的港</i><span class="typed typed--c">洛杉矶</span></div>
+                <div class="dm__kv"><i>工作编号</i><span class="num">NBHQ20260927-08</span></div>
+                <div class="dm__stages">
+                  <span class="st">提单号</span><span class="st">订舱</span><span class="st">装箱</span>
+                  <span class="st">报关</span><span class="st">开船</span><span class="st">到港</span>
+                </div>
+                <div class="dm__remark">
+                  <span class="dm__rlabel">备注</span>
+                  <p class="dm__rtext">多家工厂拼柜，提单需要分单；确认装柜地址；提单 shipper 用哪家</p>
+                </div>
+                <button class="dm__btn dm__btn--save" type="button">保存</button>
+              </div>
+            </div>
+            <div class="dmcap">
+              <span class="dmcap__i cap-a">① 点「新建工作」，右栏出表单</span>
+              <span class="dmcap__i cap-b">② 客户名填昵称就行，类型、目的港填上</span>
+              <span class="dmcap__i cap-c">③ 该交代的写在备注里：拼柜要分单、装柜地址、shipper 用哪家</span>
+              <span class="dmcap__i cap-d">④ 保存 → 左栏立刻多出这一票</span>
+            </div>
+          </div>
+        </div>
+
+        <ol class="demo__steps">
+          <li><b>①</b> 新建一票工作</li>
+          <li><b>②</b> 客户名用昵称，进度点自动生成</li>
+          <li><b>③</b> 备注写清拼柜分单、装柜地址、shipper</li>
+          <li><b>④</b> 保存，左栏多出这一票</li>
+        </ol>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ============ 02 日历到期提醒 → 置顶 → 打钩消失 ============ -->
+  <section class="section" id="d2">
+    <div class="wrap">
+      <figure class="demo">
+        <figcaption class="demo__cap">
+          <span class="demo__no num">02</span>
+          <h2 class="demo__title">日历选好日期，到点自动提醒</h2>
+        </figcaption>
+        <p class="demo__lead">
+          在日历上点好日子，这票就排进每日待办。到期那天左栏自动把它置顶并弹提醒条；
+          <b>不勾选，逾期天数会一天天往上加</b>；在进度里打了 √，置顶立刻消失。
+        </p>
+
+        <div class="demo__stage">
+          <div class="dm">
+            <div class="dm__bar"><span>工作进度看板</span><span class="dm__count num">今日待办 1</span></div>
+            <div class="dm__panes">
+              <div class="dm__L">
+                <div class="alertbar">
+                  <span class="chip chip--warn">拼箱</span>
+                  <span class="alertbar__name">阿明</span>
+                  <span class="alertbar__stage"><span class="ovdwrap"><span class="ovd ovd--1">装箱（逾期 1 天）</span><span class="ovd ovd--2">装箱（逾期 2 天）</span><span class="ovd ovd--3">装箱（逾期 3 天）</span></span></span>
+                </div>
+                <ul class="dm__list dm__list--pin">
+                  <li class="rw rw--pin"><span class="rw__box"><i class="rw__tick"></i></span><span class="chip chip--type">拼箱</span><span class="rw__name">阿明</span><span class="rw__right">装箱 <span class="num">9.26</span></span></li>
+                  <li class="rw rw--a"><span class="rw__box"></span><span class="chip chip--type">整柜</span><span class="rw__name">小陈</span><span class="rw__right">开船 9.28</span></li>
+                  <li class="rw rw--b"><span class="rw__box"></span><span class="chip chip--type">空运</span><span class="rw__name">老王</span><span class="rw__right">已到港</span></li>
+                  <li class="rw rw--c"><span class="rw__box"></span><span class="chip chip--type">拉报</span><span class="rw__name">小张</span><span class="rw__right">订舱 9.30</span></li>
+                </ul>
+              </div>
+              <div class="dm__R">
+                <div class="dm__panehead">阿明 · 拼箱 洛杉矶</div>
+                <div class="dm__cal">
+                  <div class="dm__calhead">2026 年 9 月</div>
+                  <div class="dm__calgrid">
+                    <span></span><span></span><span></span><span></span><span>25</span><span>26</span><span>27</span>
+                    <span>28</span><span>29</span><span>30</span><span></span><span></span><span></span><span></span>
+                  </div>
+                </div>
+                <ul class="dm__stages dm__stages--v">
+                  <li class="st">提单号 <span class="num">EGLV••••••</span></li>
+                  <li class="st">订舱 <span class="num">9.20</span></li>
+                  <li class="st st--pick">装箱 <span class="num">9.26</span></li>
+                  <li class="st">报关</li>
+                  <li class="st">开船</li>
+                  <li class="st">到港</li>
+                </ul>
+              </div>
+            </div>
+            <div class="dmcap">
+              <span class="dmcap__i cap-a">① 日历上点好「装箱」的日子</span>
+              <span class="dmcap__i cap-b">② 到期那天：左栏自动置顶，顶部弹提醒条</span>
+              <span class="dmcap__i cap-c">③ 不勾选的话，逾期天数一天天往上加：1 天 → 2 天 → 3 天</span>
+              <span class="dmcap__i cap-d">④ 做完去进度里打 √，确认完成</span>
+              <span class="dmcap__i cap-e">⑤ 打完 √，左栏的置顶和提醒条一起消失</span>
+            </div>
+          </div>
+        </div>
+
+        <ol class="demo__steps">
+          <li><b>①</b> 日历上点好日期</li>
+          <li><b>②</b> 到点自动置顶 + 提醒条</li>
+          <li><b>③</b> 不勾选，逾期天数往上加</li>
+          <li><b>④⑤</b> 进度里打 √，置顶消失</li>
+        </ol>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ============ 03 看船定位 ============ -->
+  <section class="section section--tint" id="d3">
+    <div class="wrap">
+      <figure class="demo">
+        <figcaption class="demo__cap">
+          <span class="demo__no num">03</span>
+          <h2 class="demo__title">输入船名/航次，定位自动打开</h2>
+        </figcaption>
+        <p class="demo__lead">
+          进度的「船名/航次」填上（只填船名也行），软件自动生成维运网的免费跟踪链接，
+          自动送进下面的大窗口里；开船、到港的日子也能照着航次估算。
+        </p>
+
+        <div class="demo__stage">
+          <div class="dm">
+            <div class="dm__bar"><span>阿明 · 拼箱 洛杉矶</span><span class="dm__count">进度</span></div>
+            <div class="dm__R dm__R--full">
+              <ul class="dm__stages dm__stages--v">
+                <li class="st">提单号 <span class="num">EGLV••••••</span></li>
+                <li class="st">订舱 <span class="num">9.20</span></li>
+                <li class="st">装箱 <span class="num">9.26</span></li>
+                <li class="st st--pick">船名/航次 <span class="typed typed--ship">KMTC DUBAI/2606W</span></li>
+                <li class="st">开船 <span class="num num--est">9.30（估算）</span></li>
+                <li class="st">到港 <span class="num num--est">10.18（估算）</span></li>
+              </ul>
+              <div class="dm__locate">
+                <span class="dm__rlabel">定位网址 <i>填了「船名/航次」保存后会自动生成维运网定位</i></span>
+                <p class="dm__url num">https://www.weiyun001.com/••••••</p>
+                <div class="dm__btns">
+                  <span class="dm__btn2">自定义-定位跟踪窗口 ↗</span>
+                  <span class="dm__btn2">船讯网-跟踪轨迹窗口 ↗</span>
+                  <span class="dm__btn2">🔍 谷歌全球搜索</span>
+                  <span class="dm__btn2">🔍 HS查询</span>
+                </div>
+              </div>
+            </div>
+            <div class="dm__frame">
+              <div class="dm__framehead num">维运网 · 船舶跟踪</div>
+              <div class="dm__ship">
+                <p class="dm__shipname num">KMTC DUBAI</p>
+                <p class="dm__shipvoy num">航次 2606W · 上海 → 洛杉矶</p>
+                <div class="dm__line"><span class="dm__dot"></span></div>
+              </div>
+            </div>
+            <div class="dmcap">
+              <span class="dmcap__i cap-a">① 进度里填「船名/航次」，只填船名也行</span>
+              <span class="dmcap__i cap-b">② 保存后自动生成维运网的免费跟踪链接</span>
+              <span class="dmcap__i cap-c">③ 自动显示到下面的大窗口，开船/到港日子照着估算</span>
+              <span class="dmcap__i cap-d">④ 旁边还有四个按钮直达</span>
+            </div>
+          </div>
+        </div>
+
+        <ol class="demo__steps">
+          <li><b>①</b> 进度里填船名/航次</li>
+          <li><b>②</b> 自动生成维运网定位链接</li>
+          <li><b>③</b> 大窗口自动显示，估开船/到港</li>
+          <li><b>④</b> 旁边按钮直达</li>
+        </ol>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ============ 04 做费用单 ============ -->
+  <section class="section" id="d4">
+    <div class="wrap">
+      <figure class="demo">
+        <figcaption class="demo__cap">
+          <span class="demo__no num">04</span>
+          <h2 class="demo__title">解决积压，轻松做费用单</h2>
+        </figcaption>
+        <p class="demo__lead">
+          自带 6 张费用单模板，模板库能改成自己要的样子；平时有空就随手填两笔，<b>自动保存不用点</b>；
+          等单子完结了，一次性导出成 Excel —— 费用就不会堆到月底。
+        </p>
+
+        <div class="demo__stage">
+          <div class="dm">
+            <div class="dm__bar"><span>费用单 · 拼箱 费用单</span><span class="dm__count">阿明 · 洛杉矶</span></div>
+            <div class="dm__panes">
+              <div class="dm__L">
+                <div class="dm__panehead">模板库</div>
+                <ul class="dm__tpl">
+                  <li class="tp">拼箱 费用单</li>
+                  <li class="tp">整柜 20GP</li>
+                  <li class="tp">整柜 40HQ</li>
+                  <li class="tp">空运 费用单</li>
+                  <li class="tp">拉报 40HQ</li>
+                  <li class="tp">双清 费用单</li>
+                  <li class="tp tp--own">我公司的模板（自己传的）</li>
+                </ul>
+                <div class="dm__autosave">✅ 已自动保存</div>
+              </div>
+              <div class="dm__R">
+                <table class="dm__tbl">
+                  <thead><tr><th scope="col">费用名称</th><th scope="col">币种</th><th scope="col">金额</th></tr></thead>
+                  <tbody>
+                    <tr class="er er--1"><td>海运费</td><td>USD</td><td class="num er__amt">123456</td></tr>
+                    <tr class="er er--2"><td>报关费</td><td>CNY</td><td class="num er__amt">123456</td></tr>
+                    <tr class="er er--3"><td>拖车费</td><td>CNY</td><td class="num er__amt">123456</td></tr>
+                  </tbody>
+                </table>
+                <div class="dm__sum"><span>合计</span><span class="num">USD 123456 · CNY 123456</span></div>
+                <button class="dm__btn dm__btn--exp" type="button">📥 导出 Excel</button>
+              </div>
+            </div>
+            <div class="dmcap">
+              <span class="dmcap__i cap-a">① 挑一张模板（也能把自己公司的传成模板）</span>
+              <span class="dmcap__i cap-b">② 有空就填两笔，边填边自动保存，不用点保存</span>
+              <span class="dmcap__i cap-c">③ 单子完结，点「导出 Excel」</span>
+              <span class="dmcap__i cap-d">④ 一次清掉积压，不用堆到月底</span>
+            </div>
+          </div>
+        </div>
+
+        <ol class="demo__steps">
+          <li><b>①</b> 选自带模板 / 换成自己的</li>
+          <li><b>②</b> 随手填，自动保存</li>
+          <li><b>③</b> 完结后一键导出</li>
+          <li><b>④</b> 费用不积压</li>
+        </ol>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ============ 05 月报 / 合并对账单 ============ -->
+  <section class="section section--tint" id="d5">
+    <div class="wrap">
+      <figure class="demo demo--wide">
+        <figcaption class="demo__cap">
+          <span class="demo__no num">05</span>
+          <h2 class="demo__title">搜一个客户，轻松做月报</h2>
+        </figcaption>
+        <p class="demo__lead">
+          中间栏搜客户名（比如 judy），这个客户的单子全出来；按建单时间圈出这个月，
+          勾选要统计的几票，点「合并报表导出」，一张对账单就出来了。
+        </p>
+
+        <div class="demo__stage">
+          <div class="dm">
+            <div class="dm__bar"><span>工作进度看板</span><span class="dm__count">月报</span></div>
+            <div class="dm__panes">
+              <div class="dm__L">
+                <div class="dm__search dm__search--on"><span class="typed typed--q">judy</span></div>
+                <div class="dm__drange">建单日期 <span class="num">9.01</span> → <span class="num">9.30</span></div>
+                <ul class="dm__list">
+                  <li class="rw rw--s1"><span class="rw__box"><i class="rw__tick"></i></span><span class="chip chip--type">整柜</span><span class="rw__name">judy</span><span class="rw__right">9.08</span></li>
+                  <li class="rw rw--s2"><span class="rw__box"><i class="rw__tick"></i></span><span class="chip chip--type">拼箱</span><span class="rw__name">judy</span><span class="rw__right">9.15</span></li>
+                  <li class="rw rw--s3"><span class="rw__box"><i class="rw__tick"></i></span><span class="chip chip--type">拉报</span><span class="rw__name">judy</span><span class="rw__right">9.22</span></li>
+                  <li class="rw rw--s4"><span class="rw__box"></span><span class="chip chip--type">空运</span><span class="rw__name">judy</span><span class="rw__right">9.25</span></li>
+                </ul>
+                <div class="dm__toolbar">
+                  <span class="dm__picked">已选 <b class="counter"><b class="counter__track"><i>0</i><i>1</i><i>2</i><i>3</i></b></b> 票</span>
+                  <button class="dm__btn dm__btn--rep" type="button">📊 合并报表导出</button>
+                </div>
+              </div>
+              <div class="dm__R">
+                <div class="rdoc">
+                  <div class="rdoc__fit">
+                    <p class="rdoc__title">对账单</p>
+                    <table class="rdoc__tbl">
+                      <thead>
+                        <tr>
+                          <th scope="col">工作编号</th><th scope="col">客户名</th><th scope="col">目的港</th>
+                          <th scope="col">柜型</th><th scope="col">提单号</th><th scope="col">USD运费</th><th scope="col">RMB运费</th><th scope="col">开船日</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr><td class="num">NBHQ20260908</td><td>judy</td><td>洛杉矶</td><td>40HQ</td><td class="num">COSU••••</td><td class="num">123456</td><td class="num">—</td><td class="num">9.20</td></tr>
+                        <tr><td class="num">NBHQ20260915</td><td>judy</td><td>汉堡</td><td>拼箱</td><td class="num">EGLV••••</td><td class="num">123456</td><td class="num">—</td><td class="num">9.26</td></tr>
+                        <tr><td class="num">NBHQ20260922</td><td>judy</td><td>圣彼得堡</td><td>20GP</td><td class="num">MSCU••••</td><td class="num">—</td><td class="num">123456</td><td class="num">9.30</td></tr>
+                        <tr class="rdoc__sum"><td></td><td></td><td></td><td></td><td>合计</td><td class="num">246912</td><td class="num">123456</td><td></td></tr>
+                      </tbody>
+                    </table>
+                    <p class="rdoc__file num">对账单-20260930.xlsx</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="dmcap">
+              <span class="dmcap__i cap-a">① 中间栏搜客户名（judy），单子全出来</span>
+              <span class="dmcap__i cap-b">② 用「建单日期」圈出这个月</span>
+              <span class="dmcap__i cap-c">③ 勾选要统计的几票，右上角计数跟着变</span>
+              <span class="dmcap__i cap-d">④ 点「合并报表导出」，对账单直接生成</span>
+            </div>
+          </div>
+        </div>
+
+        <ol class="demo__steps">
+          <li><b>①</b> 搜客户名，单子全出来</li>
+          <li><b>②</b> 按建单日期圈月份</li>
+          <li><b>③</b> 勾选要统计的票</li>
+          <li><b>④</b> 合并导出一张对账单</li>
+        </ol>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ============ 06 日常随笔 ============ -->
+  <section class="section" id="d6">
+    <div class="wrap">
+      <figure class="demo">
+        <figcaption class="demo__cap">
+          <span class="demo__no num">06</span>
+          <h2 class="demo__title">随心所欲，日常随笔记录</h2>
+        </figcaption>
+        <p class="demo__lead">
+          今日待办里想到什么写什么，敲一下就存好了，<b>没有「保存」这一步</b>；
+          单子底下的备注栏也是同一个脾性 —— 边打边存。
+        </p>
+
+        <div class="demo__stage">
+          <div class="dm">
+            <div class="dm__bar"><span>待办</span><span class="dm__count">边打边存</span></div>
+            <div class="dm__R dm__R--full">
+              <div class="dm__tabs">
+                <span class="tb tb--on">今日待办</span><span class="tb">未来待办</span><span class="tb">日历</span>
+              </div>
+              <ul class="dm__todos">
+                <li class="td td--1">问阿明要柜号 <span class="td__ok">已存</span></li>
+                <li class="td td--2">周四之前把 judy 的对账单发过去 <span class="td__ok">已存</span></li>
+                <li class="td td--3">老王那票报关资料补一份装箱单 <span class="td__ok">已存</span></li>
+              </ul>
+              <div class="dm__cursor">｜</div>
+              <div class="dm__savehint">✅ 边打边存，不用点保存</div>
+              <div class="dm__cal2">
+                <div class="dm__calhead">2026 年 9 月</div>
+                <div class="dm__calgrid">
+                  <span></span><span></span><span></span><span></span><span>25</span><span>26</span><span>27</span>
+                  <span>28</span><span>29</span><span>30</span><span></span><span></span><span></span><span></span>
+                </div>
+              </div>
+            </div>
+            <div class="dmcap">
+              <span class="dmcap__i cap-a">① 今日待办里敲进第一件事</span>
+              <span class="dmcap__i cap-b">② 想到就接着加，杂事都扔进来</span>
+              <span class="dmcap__i cap-c">③ 边打边存，没有「保存」这一步</span>
+              <span class="dmcap__i cap-d">④ 换到日历看看这周排得满不满</span>
+            </div>
+          </div>
+        </div>
+
+        <ol class="demo__steps">
+          <li><b>①</b> 待办里想到就写</li>
+          <li><b>②</b> 杂事都能扔进来</li>
+          <li><b>③</b> 边打边存，少一步</li>
+          <li><b>④</b> 顺手看日历</li>
+        </ol>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ============ 07 自定义查询网址 ============ -->
+  <section class="section section--tint" id="d7">
+    <div class="wrap">
+      <figure class="demo">
+        <figcaption class="demo__cap">
+          <span class="demo__no num">07</span>
+          <h2 class="demo__title">自定义查询网站，不用再翻网页</h2>
+        </figcaption>
+        <p class="demo__lead">
+          定位那一栏是个万能窗口：船公司官网、航空公司的货物跟踪页，甚至抖音、爱奇艺，
+          <b>网址粘进去就显示</b>；旁边还备了谷歌全球搜索和 HS 编码查询。
+        </p>
+
+        <div class="demo__stage">
+          <div class="dm">
+            <div class="dm__bar"><span>阿明 · 拼箱 洛杉矶</span><span class="dm__count">定位</span></div>
+            <div class="dm__R dm__R--full">
+              <div class="dm__locate">
+                <span class="dm__rlabel">定位 <i>可粘贴船公司 / 航空公司 / 自定义跟踪网址</i></span>
+                <p class="dm__url num"><span class="typed typed--url">https://www.xxx-line.com/track</span></p>
+                <div class="dm__btns">
+                  <span class="dm__btn2">谷歌地图 / 全球搜索</span>
+                  <span class="dm__btn2">🔍 HS查询</span>
+                  <span class="dm__btn2 dm__btn2--press">🪟 浮动窗并排看</span>
+                </div>
+              </div>
+              <div class="dm__frame">
+                <div class="dm__framehead num">船公司官网 · 货物跟踪</div>
+                <div class="dm__ship">
+                  <p class="dm__shipname">某某轮船 货物跟踪</p>
+                  <p class="dm__shipvoy num">提单号 EGLV•••••• · 上海 → 洛杉矶</p>
+                  <div class="dm__line"><span class="dm__dot"></span></div>
+                </div>
+              </div>
+            </div>
+            <div class="dmcap">
+              <span class="dmcap__i cap-a">① 定位栏里粘一个网址，什么都行</span>
+              <span class="dmcap__i cap-b">② 下面的大窗口立刻显示，不用再去翻网页</span>
+              <span class="dmcap__i cap-c">③ 还备着谷歌搜索和 HS 编码查询</span>
+              <span class="dmcap__i cap-d">④ 要并排看就弹成独立小窗</span>
+            </div>
+          </div>
+        </div>
+
+        <ol class="demo__steps">
+          <li><b>①</b> 网址粘进定位栏</li>
+          <li><b>②</b> 大窗口直接显示</li>
+          <li><b>③</b> 谷歌搜索 / HS 查询备着</li>
+          <li><b>④</b> 也能弹独立小窗</li>
+        </ol>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap demo-foot">
+      <h2 class="section__title">想自己点一遍？</h2>
+      <p class="section__sub">装一个试用版，这些都是你手上的单子跑出来的效果，不是录屏。</p>
+      <p class="demo-foot__actions">
+        <a class="btn btn--primary" href="./index.html#contact">要一份免费试用版</a>
+        <a class="btn btn--ghost" href="./index.html">看功能清单</a>
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap footer__inner">
+    <p class="footer__name">货代业务全能辅助小工具</p>
+    <p class="footer__note">
+      本页动画里的客户名、提单号、金额均为占位示例（金额统一写成 123456），与任何真实客户无关。
+      动画为纯 CSS 实现，不联网、不加载任何外部资源。
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
