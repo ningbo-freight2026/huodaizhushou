@@ -392,18 +392,18 @@ a:hover { color: var(--color-primary); }
 }
 .honest b { color: var(--color-primary); }
 
-/* ---------- 首屏「痛点」 ---------- */
-.pain { margin-top: var(--space-6); max-width: 46em; }
+/* ---------- 首屏「痛点」（标题就是页面的 h1，字号沿用原大标题） ---------- */
+.pain { margin-top: var(--space-5); max-width: 46em; }
 .pain__title {
-  display: flex; align-items: baseline; gap: var(--space-2);
-  font-size: var(--text-2xl); font-weight: 800; color: var(--color-gray-900);
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-1) var(--space-2);
+  /* 字号不写死：让 .hero h1 的 --text-5xl 生效，跟被删掉的那句大标题一样大 */
 }
-.pain__num3 { font-size: 1.35em; font-weight: 900; color: var(--color-gray-900); }
+.pain__num3 { font-size: 1.15em; font-weight: 900; color: var(--color-gray-900); }
 .pain__big {
-  font-size: 2.1em; line-height: 1; color: var(--color-accent);
+  font-size: 1.5em; line-height: 1; color: var(--color-accent);
   text-shadow: 0 2px 0 var(--color-accent-100);
 }
-.pain__bang { font-size: 1.5em; font-weight: 900; color: var(--color-accent); letter-spacing: -0.02em; }
+.pain__bang { font-size: 1.2em; font-weight: 900; color: var(--color-accent); letter-spacing: -0.02em; }
 .pain__list { margin-top: var(--space-5); display: flex; flex-direction: column; gap: var(--space-5); }
 .pain__list li { padding-left: var(--space-4); border-left: 3px solid var(--color-accent-100); }
 .pain__txt { font-size: var(--text-lg); color: var(--color-gray-800); }
