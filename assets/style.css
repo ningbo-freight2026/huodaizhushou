@@ -615,7 +615,7 @@ a.contact__item:hover { background: rgba(255, 255, 255, 0.14); }
 
 @media (max-width: 720px) {
   :root { --text-5xl: 29px; --text-4xl: 25px; --text-3xl: 22px; --text-2xl: 20px; --text-lg: 16px; --text-base: 15px; }
-  .hero .pain__title { font-size: 22px; }   /* 手机上再小一档，「做货代业务的」那6个字才放得下 */
+  .hero .pain__title { font-size: 22px; }   /* 手机上再小一档，标题才放得下 */
   .topbar__inner { min-height: 58px; gap: var(--space-3); }
   .nav { display: none; }
   .brand__name { font-size: var(--text-sm); white-space: normal; line-height: 1.3; }
