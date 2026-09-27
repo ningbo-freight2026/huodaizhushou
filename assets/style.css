@@ -451,8 +451,9 @@ a:hover { color: var(--color-primary); }
 
 /* ---------- 下载试用版 ---------- */
 .dl {
-  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  display: grid; grid-template-columns: minmax(0, 1fr);   /* 只提供一种包，单列居中 */
   gap: var(--space-6); margin-top: var(--space-10);
+  max-width: 680px;
 }
 .dl__card {
   padding: var(--space-6);
