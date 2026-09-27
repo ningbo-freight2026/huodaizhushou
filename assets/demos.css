@@ -1,11 +1,16 @@
 /* ============================================================
    动态演示页样式（site/demos.html 专用）
-   七段循环动画，每段统一 10s 一轮（便于"定格到某秒"做程序化验证）。
+   五段循环动画，每段统一 10s 一轮（便于"定格到某秒"做程序化验证）。
    纯 CSS，零 JavaScript；依赖 assets/style.css 里的设计令牌。
 
    统一时间轴（4 步段）：0-8 起始 | 10-28 步① | 30-48 步② | 50-68 步③ | 70-88 步④ | 88-100 复位
-   5 步段（演示二）：8-24 / 26-42 / 44-60 / 62-76 / 78-88 / 88-100
-   说明字幕 .dmcap 与画面里的元素共用同一批关键帧，所以"字和画面永远同步"。
+   演示一（5 步）：12-29 / 30-49 / 50-69 / 70-79 / 80-88 / 88-100
+
+   ★ 两个必须守住的规则（都踩过）：
+   1) 「逐字显示」的字段**不要设固定宽度**：inline-size:2ch 是按英文数字宽度算的，
+      中文两个字要 2em 才放得下，一挤就换行、看着像"叠字"。让它自然宽度 + clip-path 揭示最稳。
+   2) **说明字幕必须互斥**：同一时刻只能显示一条，全部用 steps(1) 硬切，
+      否则"出现后一直留着"会几条字幕叠在一起（第一版就是这样）。
    ============================================================ */
 
 /* ============================ 页头 ============================ */
@@ -25,7 +30,6 @@
   margin-top: var(--space-4); max-width: 58em;
   color: var(--color-gray-600); font-size: var(--text-base);
 }
-
 .demo__stage {
   position: relative;
   margin-top: var(--space-8);
@@ -36,7 +40,6 @@
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-md);
 }
-
 .demo__steps {
   display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--space-4); margin-top: var(--space-6);
@@ -67,7 +70,7 @@
 .dm__bar span { color: var(--color-white); font-size: var(--text-sm); font-weight: 700; }
 .dm__count { color: var(--color-primary-100) !important; font-size: var(--text-xs) !important; font-weight: 400 !important; }
 
-.dm__panes { display: grid; grid-template-columns: minmax(0, 0.84fr) minmax(0, 1.16fr); }
+.dm__panes { display: grid; grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr); }
 .dm__L { padding: var(--space-3); border-right: 1px solid var(--color-gray-200); background: var(--color-gray-50); }
 .dm__R { padding: var(--space-3) var(--space-4); position: relative; }
 .dm__R--full { padding: var(--space-4); }
@@ -80,7 +83,7 @@
 .dm__search--on { border-color: var(--color-primary-400); color: var(--color-gray-900); font-weight: 700; }
 .dm__drange {
   display: block; margin-bottom: var(--space-3); padding: var(--space-1) var(--space-3);
-  border: 1px dashed var(--color-gray-300); border-radius: var(--radius-md);
+  border: 1px dashed var(--color-primary-400); border-radius: var(--radius-md);
   background: var(--color-white); color: var(--color-gray-600); font-size: var(--text-xs);
 }
 .dm__panehead {
@@ -88,11 +91,27 @@
   border-bottom: 2px solid var(--color-primary-100);
   color: var(--color-primary); font-size: var(--text-sm); font-weight: 800;
 }
-.dm__kv {
-  display: flex; align-items: baseline; gap: var(--space-2);
-  padding: var(--space-1) 0; font-size: var(--text-xs); color: var(--color-gray-800);
+
+/* 统计卡（照真实看板：全部 / 置顶 / 逾期 / 已完成） */
+.dm__stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-bottom: var(--space-2); }
+.sc {
+  display: flex; flex-direction: column; align-items: center; gap: 1px;
+  padding: 3px 2px; border: 1px solid var(--color-gray-200); border-radius: var(--radius-sm);
+  background: var(--color-white);
 }
-.dm__kv i { flex: none; width: 4.5em; font-style: normal; color: var(--color-gray-600); }
+.sc i { font-style: normal; font-size: 9px; color: var(--color-gray-600); }
+.sc b { font-size: 12px; color: var(--color-gray-800); }
+.sc--on { border-color: var(--color-primary-400); }
+.sc--due b { color: var(--color-accent); }
+
+/* 类别按钮（3×2） */
+.dm__cats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; margin-bottom: var(--space-3); }
+.ct {
+  padding: 2px 1px; border: 1px solid var(--color-gray-200); border-radius: var(--radius-sm);
+  background: var(--color-white); color: var(--color-gray-600);
+  font-size: 9px; text-align: center;
+}
+.ct--on { background: var(--color-primary); border-color: var(--color-primary); color: var(--color-white); font-weight: 700; }
 
 /* ============================ 工作单行 ============================ */
 .dm__list { display: flex; flex-direction: column; gap: 6px; }
@@ -115,28 +134,24 @@
     linear-gradient(-45deg, transparent 44%, var(--color-white) 44%, var(--color-white) 56%, transparent 56%);
 }
 .rw__name { flex: none; font-weight: 700; color: var(--color-gray-800); white-space: nowrap; }
-.rw__right { flex: none; margin-left: auto; color: var(--color-gray-600); font-family: var(--font-num); white-space: nowrap; }
+.rw__meta {
+  flex: 1 1 auto; min-width: 0; color: var(--color-gray-600);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.rw__right { flex: none; margin-left: auto; color: var(--color-gray-800); font-family: var(--font-num); white-space: nowrap; }
 
-/* 逐字显示的字段（clip-path 揭示，不产生重排抖动） */
+/* ★ 逐字显示：只做 clip-path 揭示，不设固定宽度（设了会把中文挤成两行） */
 .typed {
   display: inline-block; vertical-align: bottom;
   clip-path: inset(0 100% 0 0);
   color: var(--color-gray-900); font-weight: 700;
 }
-.typed--a { inline-size: 2ch; }
-.typed--b { inline-size: 2ch; }
-.typed--c { inline-size: 3ch; }
-.typed--ship { inline-size: 17ch; font-family: var(--font-num); }
-.typed--q { inline-size: 4ch; }
-.typed--url { inline-size: 30ch; font-family: var(--font-num); }
+.typed--ship, .typed--q, .typed--url { font-family: var(--font-num); }
 
 /* 进度点 */
-.dm__stages { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-3); margin-top: var(--space-2); }
-.dm__stages--v { flex-direction: column; gap: 3px; margin-top: 0; }
-.st {
-  display: flex; align-items: center; gap: var(--space-2);
-  font-size: 11px; color: var(--color-gray-600);
-}
+.dm__stages { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-3); }
+.dm__stages--v { flex-direction: column; gap: 3px; }
+.st { display: flex; align-items: center; gap: var(--space-2); font-size: 11px; color: var(--color-gray-600); }
 .st::before {
   content: ""; flex: none; width: 12px; height: 12px;
   border: 1.5px solid var(--color-gray-300); border-radius: var(--radius-sm);
@@ -148,16 +163,6 @@
 .st--pick::before { border-color: var(--color-accent-bright); box-shadow: 0 0 0 3px var(--color-accent-100); }
 .st .num--est { color: var(--color-gray-600); }
 
-/* 备注 */
-.dm__remark {
-  margin-top: var(--space-3); padding: var(--space-2) var(--space-3);
-  border: 1px dashed var(--color-gray-300); border-radius: var(--radius-md);
-  background: var(--color-accent-100);
-}
-.dm__rlabel { display: block; font-size: 11px; font-weight: 700; color: var(--color-accent-600); }
-.dm__rlabel i { font-style: normal; font-weight: 400; color: var(--color-gray-600); }
-.dm__rtext { margin-top: 2px; font-size: 11px; color: var(--color-gray-800); }
-
 /* mock 按钮 */
 .dm__btn {
   display: inline-flex; align-items: center; justify-content: center;
@@ -166,9 +171,7 @@
   background: var(--color-accent); color: var(--color-white);
   font-family: inherit; font-size: 11px; font-weight: 700;
 }
-.dm__btn--save { position: absolute; right: var(--space-4); bottom: var(--space-3); }
 .dm__btn--exp, .dm__btn--rep { margin-top: var(--space-2); }
-
 .dm__btn2 {
   padding: 2px var(--space-2);
   border: 1px solid var(--color-gray-300); border-radius: var(--radius-sm);
@@ -177,26 +180,44 @@
 }
 .dm__btns { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-2); }
 
-/* 提醒条 */
+/* 提醒条（照真实格式：类型 → 客户名 → 建单日期 · 目的港 …… 进度项靠右） */
 .alertbar {
   display: flex; align-items: center; gap: var(--space-2);
-  margin-bottom: var(--space-2); padding: var(--space-2) var(--space-3);
+  margin-bottom: var(--space-2); padding: 3px var(--space-2);
   border-left: 3px solid var(--color-accent-bright);
   background: var(--color-accent-100); border-radius: var(--radius-sm);
-  font-size: 11px;
+  font-size: 10.5px;
 }
-.alertbar__name { font-weight: 700; color: var(--color-gray-800); }
-.alertbar__stage { margin-left: auto; color: var(--color-accent-600); font-weight: 700; }
+.alertbar__name { flex: none; font-weight: 700; color: var(--color-accent-600); white-space: nowrap; }
+.alertbar__mid {
+  flex: 1 1 auto; min-width: 0; color: var(--color-gray-600);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.alertbar__stage { flex: none; margin-left: auto; color: var(--color-accent-600); font-weight: 700; white-space: nowrap; }
 
-/* 日历 */
-.dm__cal, .dm__cal2 { margin-bottom: var(--space-3); padding: var(--space-2); border: 1px solid var(--color-gray-200); border-radius: var(--radius-md); }
+/* 逾期天数：三份文本叠在同一格里交叉淡入（★ 别用"动画 content"，浏览器支持不可靠） */
+.ovdwrap { display: inline-grid; vertical-align: bottom; }
+.ovdwrap > .ovd { grid-area: 1 / 1; }
+
+/* 日历（照真实看板：周一开头、7 列、带星期行） */
+.dm__cal, .dm__cal2 {
+  margin-bottom: var(--space-3); padding: var(--space-2);
+  border: 1px solid var(--color-gray-200); border-radius: var(--radius-md);
+}
 .dm__calhead { font-size: 11px; font-weight: 700; color: var(--color-primary); }
-.dm__calgrid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; margin-top: var(--space-1); }
+.dm__calwk {
+  display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px;
+  margin-top: var(--space-1); padding-bottom: 2px;
+  border-bottom: 1px solid var(--color-gray-200);
+}
+.dm__calwk span { text-align: center; font-size: 9px; color: var(--color-gray-400); }
+.dm__calgrid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; margin-top: 2px; }
 .dm__calgrid span {
   display: grid; place-items: center; height: 18px;
   border-radius: var(--radius-sm);
   color: var(--color-gray-600); font-size: 10px; font-family: var(--font-num);
 }
+.dm__calgrid .cal--pick { background-color: var(--color-accent-100); color: var(--color-accent-600); font-weight: 800; }
 
 /* 模板库 */
 .dm__tpl { display: flex; flex-direction: column; gap: 4px; }
@@ -226,6 +247,8 @@
 
 /* 定位 / 大窗口 */
 .dm__locate { padding: var(--space-3); border: 1px dashed var(--color-gray-300); border-radius: var(--radius-md); background: var(--color-gray-50); }
+.dm__rlabel { display: block; font-size: 11px; font-weight: 700; color: var(--color-accent-600); }
+.dm__rlabel i { font-style: normal; font-weight: 400; color: var(--color-gray-600); }
 .dm__url { margin-top: var(--space-1); font-size: 11px; color: var(--color-primary-400); word-break: break-all; }
 .dm__frame {
   margin-top: var(--space-3); min-height: 104px;
@@ -254,15 +277,11 @@
   background: var(--color-white); color: var(--color-gray-800); font-size: 11px;
 }
 .td__ok { margin-left: auto; color: var(--color-ok); font-size: 10px; font-weight: 700; }
-.dm__cursor { color: var(--color-accent); font-weight: 800; }
 .dm__savehint { margin-top: var(--space-2); color: var(--color-ok); font-size: 11px; font-weight: 700; }
 .dm__cal2 { margin-top: var(--space-3); margin-bottom: 0; }
 
 /* 工具栏 + 计数 */
-.dm__toolbar {
-  display: flex; align-items: center; justify-content: space-between; gap: var(--space-2);
-  margin-top: var(--space-3);
-}
+.dm__toolbar { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); margin-top: var(--space-3); }
 .dm__picked { color: var(--color-gray-600); font-size: 11px; }
 .counter { display: inline-block; height: 1.35em; overflow: hidden; vertical-align: bottom; }
 .counter__track { display: block; }
@@ -278,141 +297,125 @@
 .rdoc__tbl th, .rdoc__tbl td {
   padding: 2px var(--space-1);
   border: 1px solid var(--color-gray-300);
-  font-size: 9px; text-align: left; white-space: nowrap; color: var(--color-gray-800);
+  font-size: 9.5px; text-align: left; white-space: nowrap; color: var(--color-gray-800);
 }
 .rdoc__tbl thead th { background: var(--color-gray-900); color: var(--color-white); font-weight: 700; }
 .rdoc__sum td { background: var(--color-primary-50); font-weight: 700; color: var(--color-primary); }
 .rdoc__file { margin-top: var(--space-2); color: var(--color-ok); font-size: 10px; font-weight: 700; }
 
-/* ============================ 画面内的说明字幕 ============================ */
-.dmcap {
-  position: relative; height: 34px;
-  border-top: 1px solid var(--color-gray-200);
-  background: var(--color-primary-50);
-}
+/* ============================ 画面内的说明字幕（★ 必须互斥） ============================ */
+.dmcap { position: relative; height: 34px; border-top: 1px solid var(--color-gray-200); background: var(--color-primary-50); }
 .dmcap__i {
   position: absolute; inset: 0;
   display: flex; align-items: center;
   padding: 0 var(--space-4);
   opacity: 0;
   color: var(--color-primary); font-size: var(--text-sm); font-weight: 700;
+  animation-duration: 10s; animation-iteration-count: infinite;
+  animation-timing-function: steps(1, end);
 }
+/* 4 步段：①10-28 ②30-48 ③50-68 ④70-88 */
+@keyframes cap1 { 0%, 9% { opacity: 0; } 12%, 28% { opacity: 1; } 29%, 100% { opacity: 0; } }
+@keyframes cap2 { 0%, 29% { opacity: 0; } 30%, 48% { opacity: 1; } 49%, 100% { opacity: 0; } }
+@keyframes cap3 { 0%, 49% { opacity: 0; } 50%, 68% { opacity: 1; } 69%, 100% { opacity: 0; } }
+@keyframes cap4 { 0%, 69% { opacity: 0; } 70%, 92% { opacity: 1; } 96%, 100% { opacity: 0; } }
+.cap-a { animation-name: cap1; }
+.cap-b { animation-name: cap2; }
+.cap-c { animation-name: cap3; }
+.cap-d { animation-name: cap4; }
+/* 演示一（5 步）：①12-29 ②30-49 ③50-69 ④70-79 ⑤80-94 */
+@keyframes cap5a { 0%, 9% { opacity: 0; } 12%, 29% { opacity: 1; } 30%, 100% { opacity: 0; } }
+@keyframes cap5b { 0%, 29% { opacity: 0; } 30%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+@keyframes cap5c { 0%, 49% { opacity: 0; } 50%, 69% { opacity: 1; } 70%, 100% { opacity: 0; } }
+@keyframes cap5d { 0%, 69% { opacity: 0; } 70%, 79% { opacity: 1; } 80%, 100% { opacity: 0; } }
+@keyframes cap5e { 0%, 79% { opacity: 0; } 80%, 94% { opacity: 1; } 97%, 100% { opacity: 0; } }
+#d1 .cap-a { animation-name: cap5a; }
+#d1 .cap-b { animation-name: cap5b; }
+#d1 .cap-c { animation-name: cap5c; }
+#d1 .cap-d { animation-name: cap5d; }
+#d1 .cap-e { animation-name: cap5e; }
+
+/* 通用：出现后保留（给画面元素用；字幕**不要**用这套） */
+@keyframes s1on { 0%, 8% { opacity: 0; } 12%, 92% { opacity: 1; } 97%, 100% { opacity: 0; } }
+@keyframes s2on { 0%, 28% { opacity: 0; } 32%, 92% { opacity: 1; } 97%, 100% { opacity: 0; } }
+@keyframes s3on { 0%, 48% { opacity: 0; } 52%, 92% { opacity: 1; } 97%, 100% { opacity: 0; } }
+@keyframes s4on { 0%, 68% { opacity: 0; } 72%, 92% { opacity: 1; } 97%, 100% { opacity: 0; } }
+@keyframes t1 { 0%, 8% { clip-path: inset(0 100% 0 0); } 12%, 92% { clip-path: inset(0 0 0 0); } 97%, 100% { clip-path: inset(0 100% 0 0); } }
+@keyframes t2 { 0%, 28% { clip-path: inset(0 100% 0 0); } 32%, 92% { clip-path: inset(0 0 0 0); } 97%, 100% { clip-path: inset(0 100% 0 0); } }
+@keyframes t3 { 0%, 48% { clip-path: inset(0 100% 0 0); } 52%, 92% { clip-path: inset(0 0 0 0); } 97%, 100% { clip-path: inset(0 100% 0 0); } }
 
 /* ============================================================
-   通用关键帧：4 步段（10-28 / 30-48 / 50-68 / 70-88，88-100 复位）
+   演示一：日历到期提醒 → 置顶 → 打钩消失（5 步）
    ============================================================ */
-@keyframes s1on { 0%, 9% { opacity: 0; } 15%, 90% { opacity: 1; } 95%, 100% { opacity: 0; } }
-@keyframes s2on { 0%, 29% { opacity: 0; } 35%, 90% { opacity: 1; } 95%, 100% { opacity: 0; } }
-@keyframes s3on { 0%, 49% { opacity: 0; } 55%, 90% { opacity: 1; } 95%, 100% { opacity: 0; } }
-@keyframes s4on { 0%, 69% { opacity: 0; } 75%, 90% { opacity: 1; } 95%, 100% { opacity: 0; } }
-
-@keyframes t1 { 0%, 9% { clip-path: inset(0 100% 0 0); } 15%, 90% { clip-path: inset(0 0 0 0); } 95%, 100% { clip-path: inset(0 100% 0 0); } }
-@keyframes t2 { 0%, 29% { clip-path: inset(0 100% 0 0); } 35%, 90% { clip-path: inset(0 0 0 0); } 95%, 100% { clip-path: inset(0 100% 0 0); } }
-@keyframes t3 { 0%, 49% { clip-path: inset(0 100% 0 0); } 55%, 90% { clip-path: inset(0 0 0 0); } 95%, 100% { clip-path: inset(0 100% 0 0); } }
-@keyframes t4 { 0%, 69% { clip-path: inset(0 100% 0 0); } 75%, 90% { clip-path: inset(0 0 0 0); } 95%, 100% { clip-path: inset(0 100% 0 0); } }
-
-.dmcap__i { animation-duration: 10s; animation-iteration-count: infinite; }
-.cap-a { animation-name: s1on; }
-.cap-b { animation-name: s2on; }
-.cap-c { animation-name: s3on; }
-.cap-d { animation-name: s4on; }
-
-/* ============================================================
-   演示一：新建单子
-   ============================================================ */
-#d1 .dm__R { animation: s1on 10s infinite; }
-#d1 .typed--a, #d1 .typed--b, #d1 .typed--c { animation: t2 10s steps(3, end) infinite; }
-#d1 .dm__remark { animation: s3on 10s infinite; }
-#d1 .dm__btn--save { animation: s1on 10s infinite; }
-#d1 .rw--new { animation: s4on 10s infinite; }
-
-/* ============================================================
-   演示二：日历到期提醒 → 置顶 → 打钩消失（5 步）
-   ============================================================ */
-@keyframes u1 { 0%, 7% { opacity: 0; } 12%, 90% { opacity: 1; } 95%, 100% { opacity: 0; } }
-
-#d2 .dm__calgrid span:nth-child(6) { animation: u1 10s infinite; background-color: var(--color-accent-100); color: var(--color-accent-600); font-weight: 800; }
-#d2 .st--pick { animation: u1 10s infinite; }
+#d1 .cal--pick, #d1 .st--pick { animation: u1 10s infinite; }
+@keyframes u1 { 0%, 9% { opacity: 0; } 14%, 92% { opacity: 1; } 97%, 100% { opacity: 0; } }
 
 /* 提醒条：到期才出现，打钩后收起 */
-#d2 .alertbar { animation: d2Alert 10s infinite; }
-@keyframes d2Alert {
-  0%, 25%   { opacity: 0; }
-  31%, 76%  { opacity: 1; }
-  82%, 100% { opacity: 0; }
+#d1 .alertbar { animation: d1Alert 10s infinite; }
+@keyframes d1Alert { 0%, 29% { opacity: 0; } 33%, 70% { opacity: 1; } 76%, 100% { opacity: 0; } }
+
+/* 逾期天数：1 → 2 → 3（不去勾选就一直涨） */
+#d1 .ovd--1 { animation: ov1 10s steps(1, end) infinite; }
+#d1 .ovd--2 { animation: ov2 10s steps(1, end) infinite; }
+#d1 .ovd--3 { animation: ov3 10s steps(1, end) infinite; }
+@keyframes ov1 { 0%, 29% { opacity: 0; } 33%, 47% { opacity: 1; } 48%, 100% { opacity: 0; } }
+@keyframes ov2 { 0%, 47% { opacity: 0; } 48%, 57% { opacity: 1; } 58%, 100% { opacity: 0; } }
+@keyframes ov3 { 0%, 57% { opacity: 0; } 58%, 70% { opacity: 1; } 76%, 100% { opacity: 0; } }
+
+/* 打钩：勾选框由白变绿、勾出现；收尾一起复位 */
+#d1 .rw__tick { animation: d1Tick 10s infinite; }
+@keyframes d1Tick { 0%, 69% { opacity: 0; } 73%, 79% { opacity: 1; } 83%, 100% { opacity: 0; } }
+#d1 .rw__box { animation: d1Box 10s infinite; }
+@keyframes d1Box {
+  0%, 69% { background-color: var(--color-white); border-color: var(--color-gray-300); }
+  73%, 79% { background-color: var(--color-ok); border-color: var(--color-ok); }
+  83%, 100% { background-color: var(--color-white); border-color: var(--color-gray-300); }
+}
+/* 右栏「装箱」进度点：先是"已填日期"的橙圈，打钩后变绿勾 */
+#d1 .st--pick::before { animation: d1PickBox 10s infinite; }
+@keyframes d1PickBox {
+  0%, 69% { background-color: var(--color-white); border-color: var(--color-accent-bright); box-shadow: 0 0 0 3px var(--color-accent-100); }
+  73%, 79% { background-color: var(--color-ok); border-color: var(--color-ok); box-shadow: none; }
+  83%, 100% { background-color: var(--color-white); border-color: var(--color-accent-bright); box-shadow: 0 0 0 3px var(--color-accent-100); }
 }
 
-/* 逾期天数一天天往上加：三份文本叠在同一格里交叉淡入。
-   ★ 别用"动画 content"的写法——浏览器对 content 的可动画支持不可靠。 */
-.ovdwrap { display: inline-grid; vertical-align: bottom; }
-.ovdwrap > .ovd { grid-area: 1 / 1; }
-#d2 .ovd--1 { animation: ov1 10s steps(1, end) infinite; }
-#d2 .ovd--2 { animation: ov2 10s steps(1, end) infinite; }
-#d2 .ovd--3 { animation: ov3 10s steps(1, end) infinite; }
-@keyframes ov1 { 0%, 25% { opacity: 0; } 31%, 45% { opacity: 1; } 46%, 100% { opacity: 0; } }
-@keyframes ov2 { 0%, 45% { opacity: 0; } 46%, 56% { opacity: 1; } 57%, 100% { opacity: 0; } }
-@keyframes ov3 { 0%, 56% { opacity: 0; } 57%, 76% { opacity: 1; } 82%, 100% { opacity: 0; } }
-
-/* 打钩：勾选框由白变绿、上面的勾出现；完事再复位 */
-#d2 .rw__tick { animation: d2Tick 10s infinite; }
-@keyframes d2Tick {
-  0%, 61%   { opacity: 0; }
-  66%, 80%  { opacity: 1; }
-  86%, 100% { opacity: 0; }
-}
-#d2 .rw__box { animation: d2Box 10s infinite; }
-@keyframes d2Box {
-  0%, 61%   { background-color: var(--color-white); border-color: var(--color-gray-300); }
-  66%, 80%  { background-color: var(--color-ok); border-color: var(--color-ok); }
-  86%, 100% { background-color: var(--color-white); border-color: var(--color-gray-300); }
-}
-/* 右栏「装箱」那个进度点：先是"已填日期"的橙圈，打钩后变绿勾 */
-#d2 .st--pick::before { animation: d2PickBox 10s infinite; }
-@keyframes d2PickBox {
-  0%, 61%   { background-color: var(--color-white); border-color: var(--color-accent-bright); box-shadow: 0 0 0 3px var(--color-accent-100); }
-  66%, 80%  { background-color: var(--color-ok); border-color: var(--color-ok); box-shadow: none; }
-  86%, 100% { background-color: var(--color-white); border-color: var(--color-accent-bright); box-shadow: 0 0 0 3px var(--color-accent-100); }
-}
-
-/* 左栏行序：初始 小陈0/老王1/小张2/阿明3 → 到期阿明置顶 → 打钩后回原位。
-   收尾回到与开头完全相同的状态，循环不会有跳变。 */
+/* 左栏行序：初始 小陈0/老王1/小张2/阿明3 → 到期阿明置顶 → 打钩后回原位（首尾一致，循环无跳变） */
 .dm__list--pin { position: relative; height: 154px; }
 .dm__list--pin .rw { position: absolute; left: 0; right: 0; top: 0; }
-#d2 .rw--pin { animation: posPin 10s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
-#d2 .rw--a { animation: posA 10s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
-#d2 .rw--b { animation: posB 10s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
-#d2 .rw--c { animation: posC 10s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+#d1 .rw--pin { animation: posPin 10s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+#d1 .rw--a { animation: posA 10s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+#d1 .rw--b { animation: posB 10s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+#d1 .rw--c { animation: posC 10s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
 @keyframes posPin {
-  0%, 26%   { transform: translateY(120px); background-color: var(--color-white); }
-  32%, 76%  { transform: translateY(0); background-color: var(--color-accent-100); }
+  0%, 29% { transform: translateY(120px); background-color: var(--color-white); }
+  34%, 76% { transform: translateY(0); background-color: var(--color-accent-100); }
   84%, 100% { transform: translateY(120px); background-color: var(--color-white); }
 }
-@keyframes posA { 0%, 26% { transform: translateY(0); } 32%, 76% { transform: translateY(40px); } 84%, 100% { transform: translateY(0); } }
-@keyframes posB { 0%, 26% { transform: translateY(40px); } 32%, 76% { transform: translateY(80px); } 84%, 100% { transform: translateY(40px); } }
-@keyframes posC { 0%, 26% { transform: translateY(80px); } 32%, 76% { transform: translateY(120px); } 84%, 100% { transform: translateY(80px); } }
+@keyframes posA { 0%, 29% { transform: translateY(0); } 34%, 76% { transform: translateY(40px); } 84%, 100% { transform: translateY(0); } }
+@keyframes posB { 0%, 29% { transform: translateY(40px); } 34%, 76% { transform: translateY(80px); } 84%, 100% { transform: translateY(40px); } }
+@keyframes posC { 0%, 29% { transform: translateY(80px); } 34%, 76% { transform: translateY(120px); } 84%, 100% { transform: translateY(80px); } }
 
 /* ============================================================
-   演示三：看船定位
+   演示二：看船定位
    ============================================================ */
-#d3 .typed--ship { animation: t2 10s steps(6, end) infinite; }
-#d3 .st--pick { animation: s2on 10s infinite; }
-#d3 .num--est { animation: s3on 10s infinite; }
-#d3 .dm__url { animation: s2on 10s infinite; }
-#d3 .dm__frame { animation: s3on 10s infinite; }
-#d3 .dm__btns { animation: s4on 10s infinite; }
-#d3 .dm__dot { animation: runDot 10s infinite linear; }
+#d2 .typed--ship { animation: t2 10s steps(6, end) infinite; }
+#d2 .st--pick { animation: s2on 10s infinite; }
+#d2 .num--est { animation: s3on 10s infinite; }
+#d2 .dm__url { animation: s2on 10s infinite; }
+#d2 .dm__frame { animation: s3on 10s infinite; }
+#d2 .dm__btns { animation: s4on 10s infinite; }
+#d2 .dm__dot { animation: runDot 10s infinite linear; }
 @keyframes runDot { 0% { left: 4%; } 100% { left: 92%; } }
 
 /* ============================================================
-   演示四：做费用单
+   演示三：做费用单
    ============================================================ */
-#d4 .tp--own { animation: s1on 10s infinite; }
-#d4 .er--1 .er__amt { animation: t2 10s steps(4, end) infinite; }
-#d4 .er--2 .er__amt { animation: t2 10s steps(4, end) infinite; }
-#d4 .er--3 .er__amt { animation: t3 10s steps(4, end) infinite; }
-#d4 .dm__sum { animation: s3on 10s infinite; }
-#d4 .dm__autosave { animation: s2on 10s infinite; }
-#d4 .dm__btn--exp { animation: expPress 10s infinite; }
+#d3 .tp--own, #d3 .dm__tpl { animation: s4on 10s infinite; }
+#d3 .er--1 .er__amt, #d3 .er--2 .er__amt { animation: t2 10s steps(4, end) infinite; }
+#d3 .er--3 .er__amt { animation: t3 10s steps(4, end) infinite; }
+#d3 .dm__sum { animation: s3on 10s infinite; }
+#d3 .dm__autosave { animation: s2on 10s infinite; }
+#d3 .dm__btn--exp { animation: expPress 10s infinite; }
 @keyframes expPress {
   0%, 50% { box-shadow: none; transform: none; }
   56% { box-shadow: 0 0 0 4px var(--color-accent-100); transform: translateY(-1px); }
@@ -420,85 +423,71 @@
   64%, 88% { box-shadow: 0 0 0 4px var(--color-accent-100); transform: none; }
   94%, 100% { box-shadow: none; }
 }
-#d4 .dm__tpl { animation: s4on 10s infinite; }
 
 /* ============================================================
-   演示五：月报（搜客户 → 筛选 → 勾选 → 合并导出）
+   演示四：月报（搜客户 → 筛选 → 勾选 → 合并导出）
    ============================================================ */
-#d5 .typed--q { animation: t1 10s steps(4, end) infinite; }
-#d5 .dm__drange { animation: s2on 10s infinite; border-color: var(--color-primary-400); }
-#d5 .counter__track { animation: d5Count 10s steps(1, end) infinite; }
-@keyframes d5Count {
-  0%, 49% { transform: translateY(0); }
-  50%, 90% { transform: translateY(-4.05em); }
-  96%, 100% { transform: translateY(0); }
+#d4 .typed--q { animation: t1 10s steps(4, end) infinite; }
+#d4 .dm__drange { animation: s2on 10s infinite; }
+#d4 .counter__track { animation: d4Count 10s steps(1, end) infinite; }
+@keyframes d4Count {
+  0%, 48% { transform: translateY(0); }
+  50%, 92% { transform: translateY(-4.05em); }
+  97%, 100% { transform: translateY(0); }
 }
-#d5 .rw--s1 .rw__tick, #d5 .rw--s2 .rw__tick, #d5 .rw--s3 .rw__tick { animation: s3on 10s infinite; }
-#d5 .rw--s1 .rw__box, #d5 .rw--s2 .rw__box, #d5 .rw--s3 .rw__box { animation: d5Box 10s infinite; }
-@keyframes d5Box {
-  0%, 49% { background-color: var(--color-white); border-color: var(--color-gray-300); }
-  55%, 90% { background-color: var(--color-ok); border-color: var(--color-ok); }
-  96%, 100% { background-color: var(--color-white); border-color: var(--color-gray-300); }
+#d4 .rw--s1 .rw__tick, #d4 .rw--s2 .rw__tick, #d4 .rw--s3 .rw__tick { animation: s3on 10s infinite; }
+#d4 .rw--s1 .rw__box, #d4 .rw--s2 .rw__box, #d4 .rw--s3 .rw__box { animation: d4Box 10s infinite; }
+@keyframes d4Box {
+  0%, 48% { background-color: var(--color-white); border-color: var(--color-gray-300); }
+  52%, 92% { background-color: var(--color-ok); border-color: var(--color-ok); }
+  97%, 100% { background-color: var(--color-white); border-color: var(--color-gray-300); }
 }
-#d5 .dm__btn--rep { animation: repPress 10s infinite; }
+#d4 .dm__btn--rep { animation: repPress 10s infinite; }
 @keyframes repPress {
-  0%, 0% { box-shadow: none; transform: none; }
-  60% { box-shadow: none; transform: none; }
+  0%, 60% { box-shadow: none; transform: none; }
   64% { box-shadow: 0 0 0 4px var(--color-accent-100); transform: translateY(-1px); }
   68% { transform: translateY(1px) scale(0.97); }
   72%, 88% { box-shadow: 0 0 0 4px var(--color-accent-100); transform: none; }
   94%, 100% { box-shadow: none; }
 }
-#d5 .rdoc { opacity: 0; animation: docIn 10s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+#d4 .rdoc { opacity: 0; animation: docIn 10s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
 @keyframes docIn {
   0%, 74% { opacity: 0; transform: translateY(8%); }
-  80%, 90% { opacity: 1; transform: translateY(0); }
-  96%, 100% { opacity: 0; transform: translateY(8%); }
+  78%, 92% { opacity: 1; transform: translateY(0); }
+  97%, 100% { opacity: 0; transform: translateY(8%); }
 }
-#d5 .rdoc__sum { animation: s4on 10s infinite; }
-#d5 .rdoc__file { animation: docFile 10s infinite; }
-@keyframes docFile {
-  0%, 78% { opacity: 0; }
-  82%, 93% { opacity: 1; }
-  97%, 100% { opacity: 0; }
-}
+#d4 .rdoc__sum { animation: s4on 10s infinite; }
+#d4 .rdoc__file { animation: docFile 10s infinite; }
+@keyframes docFile { 0%, 78% { opacity: 0; } 82%, 93% { opacity: 1; } 97%, 100% { opacity: 0; } }
 
 /* ============================================================
-   演示六：日常随笔
+   演示五：日常随笔
    ============================================================ */
-#d6 .td--1 { animation: s1on 10s infinite; }
-#d6 .td--2 { animation: s2on 10s infinite; }
-#d6 .td--3 { animation: s3on 10s infinite; }
-#d6 .dm__savehint { animation: flashOk 10s infinite; }
+#d5 .td--1 { animation: s1on 10s infinite; }
+#d5 .td--2 { animation: s2on 10s infinite; }
+#d5 .td--3 { animation: s3on 10s infinite; }
+#d5 .dm__savehint { animation: flashOk 10s infinite; }
 @keyframes flashOk {
   0%, 12% { opacity: 0; }
   18%, 30% { opacity: 1; }
   36%, 44% { opacity: 0.25; }
-  50%, 90% { opacity: 1; }
-  96%, 100% { opacity: 0; }
+  50%, 92% { opacity: 1; }
+  97%, 100% { opacity: 0; }
 }
-#d6 .dm__cal2 { animation: s4on 10s infinite; }
-#d6 .tb--on { animation: tabSwap 10s steps(1, end) infinite; }
-@keyframes tabSwap {
+#d5 .dm__cal2 { animation: s4on 10s infinite; }
+/* 步④是"点日历页签"：今日待办变灰、日历页签变蓝（定格在 8.6s 时两处是自洽的） */
+#d5 .tb--on { animation: tabOff 10s steps(1, end) infinite; }
+@keyframes tabOff {
   0%, 69% { background-color: var(--color-primary); color: var(--color-white); }
-  70%, 92% { background-color: var(--color-gray-100); color: var(--color-gray-600); }
-  96%, 100% { background-color: var(--color-primary); color: var(--color-white); }
+  70%, 96% { background-color: var(--color-gray-100); color: var(--color-gray-600); }
+  98%, 100% { background-color: var(--color-primary); color: var(--color-white); }
 }
-
-/* ============================================================
-   演示七：自定义查询网址
-   ============================================================ */
-#d7 .typed--url { animation: t1 10s steps(6, end) infinite; }
-#d7 .dm__frame { animation: s2on 10s infinite; }
-#d7 .dm__btns { animation: s3on 10s infinite; }
-#d7 .dm__btn2--press { animation: pressBtn 10s infinite; }
-@keyframes pressBtn {
-  0%, 69% { box-shadow: none; transform: none; }
-  74% { box-shadow: 0 0 0 3px var(--color-accent-100); transform: translateY(-1px); }
-  78%, 88% { box-shadow: 0 0 0 3px var(--color-accent-100); transform: none; }
-  94%, 100% { box-shadow: none; }
+#d5 .tb--cal { animation: tabOn 10s steps(1, end) infinite; }
+@keyframes tabOn {
+  0%, 69% { background-color: var(--color-gray-100); color: var(--color-gray-600); }
+  70%, 96% { background-color: var(--color-primary); color: var(--color-white); }
+  98%, 100% { background-color: var(--color-gray-100); color: var(--color-gray-600); }
 }
-#d7 .dm__dot { animation: runDot 10s infinite linear; }
 
 /* ============================ 响应式 ============================ */
 @media (max-width: 900px) {
@@ -519,6 +508,6 @@
 @media (prefers-reduced-motion: reduce) {
   .demo__stage * {
     animation-play-state: paused !important;
-    animation-delay: -8.6s !important;   /* 定格在第 8.6 秒＝七段共同的结果帧 */
+    animation-delay: -8.6s !important;   /* 定格在第 8.6 秒＝五段共同的结果帧 */
   }
 }

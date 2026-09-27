@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>动态演示 — 货代业务全能辅助小工具</title>
-<meta name="description" content="七段循环动画演示：新建单子与备注、日历到期提醒与置顶打钩、船舶定位、费用单与模板库、按客户做月报对账单、日常随笔待办、自定义查询网址。">
+<meta name="description" content="五段循环动画：日历到期提醒与置顶打钩、船舶定位、费用单与模板库、按客户做月报对账单、日常随笔待办。">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23123A5C'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%23D8552B'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="./assets/style.css">
 <link rel="stylesheet" href="./assets/demos.css">
@@ -21,13 +21,11 @@
     </a>
     <nav class="nav" aria-label="页面导航">
       <a href="./index.html#features">功能</a>
-      <a href="#d1">新建单子</a>
-      <a href="#d2">到期提醒</a>
-      <a href="#d3">船定位</a>
-      <a href="#d4">费用单</a>
-      <a href="#d5">月报</a>
-      <a href="#d6">随笔</a>
-      <a href="#d7">自定义网址</a>
+      <a href="#d1">到期提醒</a>
+      <a href="#d2">船定位</a>
+      <a href="#d3">费用单</a>
+      <a href="#d4">月报</a>
+      <a href="#d5">随笔</a>
     </nav>
     <a class="btn btn--primary btn--sm" href="./index.html#contact">要一份试用版</a>
   </div>
@@ -37,119 +35,100 @@
 
   <section class="section demo-head">
     <div class="wrap">
-      <p class="eyebrow">七段循环动画 · 按软件真实操作顺序画的</p>
+      <p class="eyebrow">五段循环动画 · 按软件真实操作顺序画的</p>
       <h1 class="demo-head__title">它会动的样子</h1>
       <p class="demo-head__lead">
-        下面七段是循环播放的动画，每段都带文字说明，演的就是你平时做单的步骤。
+        下面五段是循环播放的动画，每段都带文字说明，演的就是你平时做单的步骤。
         画面里的客户名、提单号、金额全是占位示例（金额一律写 123456），不是真实数据。
       </p>
     </div>
   </section>
 
-  <!-- ============ 01 新建单子 + 备注 ============ -->
+  <!-- ============ 01 日历到期提醒 → 置顶 → 打钩消失 ============ -->
   <section class="section section--tint" id="d1">
     <div class="wrap">
       <figure class="demo">
         <figcaption class="demo__cap">
           <span class="demo__no num">01</span>
-          <h2 class="demo__title">创建要跟的单子，顺手把该记的都记上</h2>
-        </figcaption>
-        <p class="demo__lead">
-          新建一票，客户名填个自己认得的昵称就行；工作编号用公司实际那套编号。
-          进度点自动生成，要交代的事（多家工厂拼柜、提单要分单、装柜地址、shipper 用哪家）全写在备注里。
-        </p>
-
-        <div class="demo__stage">
-          <div class="dm">
-            <div class="dm__bar"><span>工作进度看板</span><span class="dm__count num">共 3 票</span></div>
-            <div class="dm__panes">
-              <div class="dm__L">
-                <div class="dm__search">搜客户 / 提单号 / 目的港</div>
-                <ul class="dm__list">
-                  <li class="rw"><span class="rw__box"></span><span class="chip chip--type">整柜</span><span class="rw__name">阿明</span><span class="rw__right">开船 9.28</span></li>
-                  <li class="rw"><span class="rw__box"></span><span class="chip chip--type">空运</span><span class="rw__name">小陈</span><span class="rw__right">已到港</span></li>
-                  <li class="rw"><span class="rw__box"></span><span class="chip chip--type">拉报</span><span class="rw__name">老王</span><span class="rw__right">订舱 9.25</span></li>
-                  <li class="rw rw--new"><span class="rw__box"></span><span class="chip chip--type">拼箱</span><span class="rw__name">阿明</span><span class="rw__right">装箱 9.30</span></li>
-                </ul>
-              </div>
-              <div class="dm__R">
-                <div class="dm__panehead">新建工作</div>
-                <div class="dm__kv"><i>客户名</i><span class="typed typed--a">阿明</span></div>
-                <div class="dm__kv"><i>类型</i><span class="typed typed--b">拼箱</span></div>
-                <div class="dm__kv"><i>目的港</i><span class="typed typed--c">洛杉矶</span></div>
-                <div class="dm__kv"><i>工作编号</i><span class="num">NBHQ20260927-08</span></div>
-                <div class="dm__stages">
-                  <span class="st">提单号</span><span class="st">订舱</span><span class="st">装箱</span>
-                  <span class="st">报关</span><span class="st">开船</span><span class="st">到港</span>
-                </div>
-                <div class="dm__remark">
-                  <span class="dm__rlabel">备注</span>
-                  <p class="dm__rtext">多家工厂拼柜，提单需要分单；确认装柜地址；提单 shipper 用哪家</p>
-                </div>
-                <button class="dm__btn dm__btn--save" type="button">保存</button>
-              </div>
-            </div>
-            <div class="dmcap">
-              <span class="dmcap__i cap-a">① 点「新建工作」，右栏出表单</span>
-              <span class="dmcap__i cap-b">② 客户名填昵称就行，类型、目的港填上</span>
-              <span class="dmcap__i cap-c">③ 该交代的写在备注里：拼柜要分单、装柜地址、shipper 用哪家</span>
-              <span class="dmcap__i cap-d">④ 保存 → 左栏立刻多出这一票</span>
-            </div>
-          </div>
-        </div>
-
-        <ol class="demo__steps">
-          <li><b>①</b> 新建一票工作</li>
-          <li><b>②</b> 客户名用昵称，进度点自动生成</li>
-          <li><b>③</b> 备注写清拼柜分单、装柜地址、shipper</li>
-          <li><b>④</b> 保存，左栏多出这一票</li>
-        </ol>
-      </figure>
-    </div>
-  </section>
-
-  <!-- ============ 02 日历到期提醒 → 置顶 → 打钩消失 ============ -->
-  <section class="section" id="d2">
-    <div class="wrap">
-      <figure class="demo">
-        <figcaption class="demo__cap">
-          <span class="demo__no num">02</span>
           <h2 class="demo__title">日历选好日期，到点自动提醒</h2>
         </figcaption>
         <p class="demo__lead">
-          在日历上点好日子，这票就排进每日待办。到期那天左栏自动把它置顶并弹提醒条；
-          <b>不勾选，逾期天数会一天天往上加</b>；在进度里打了 √，置顶立刻消失。
+          在日历上点好日子，这票就排进今日待办。到期那天左栏自动把它置顶并弹提醒条；
+          <b>不勾选，逾期天数会一天天往上加</b>（1 天 → 2 天 → 3 天）；在进度里打了 √，
+          置顶立刻消失。
         </p>
 
         <div class="demo__stage">
           <div class="dm">
-            <div class="dm__bar"><span>工作进度看板</span><span class="dm__count num">今日待办 1</span></div>
+            <div class="dm__bar"><span>工作进度看板</span><span class="dm__count num">今日待办 1 票</span></div>
             <div class="dm__panes">
               <div class="dm__L">
+                <div class="dm__stats">
+                  <span class="sc"><i>全部</i><b class="num">4</b></span>
+                  <span class="sc sc--on"><i>置顶</i><b class="num">1</b></span>
+                  <span class="sc sc--due"><i>逾期</i><b class="num">1</b></span>
+                  <span class="sc"><i>已完成</i><b class="num">0</b></span>
+                </div>
+                <div class="dm__cats">
+                  <span class="ct ct--on">拼箱 1</span><span class="ct">整柜 1</span><span class="ct">空运 1</span>
+                  <span class="ct">双清 0</span><span class="ct">拉报 1</span><span class="ct">进口 0</span>
+                </div>
+
                 <div class="alertbar">
                   <span class="chip chip--warn">拼箱</span>
                   <span class="alertbar__name">阿明</span>
+                  <span class="alertbar__mid">9.22 建单 · 洛杉矶</span>
                   <span class="alertbar__stage"><span class="ovdwrap"><span class="ovd ovd--1">装箱（逾期 1 天）</span><span class="ovd ovd--2">装箱（逾期 2 天）</span><span class="ovd ovd--3">装箱（逾期 3 天）</span></span></span>
                 </div>
+
                 <ul class="dm__list dm__list--pin">
-                  <li class="rw rw--pin"><span class="rw__box"><i class="rw__tick"></i></span><span class="chip chip--type">拼箱</span><span class="rw__name">阿明</span><span class="rw__right">装箱 <span class="num">9.26</span></span></li>
-                  <li class="rw rw--a"><span class="rw__box"></span><span class="chip chip--type">整柜</span><span class="rw__name">小陈</span><span class="rw__right">开船 9.28</span></li>
-                  <li class="rw rw--b"><span class="rw__box"></span><span class="chip chip--type">空运</span><span class="rw__name">老王</span><span class="rw__right">已到港</span></li>
-                  <li class="rw rw--c"><span class="rw__box"></span><span class="chip chip--type">拉报</span><span class="rw__name">小张</span><span class="rw__right">订舱 9.30</span></li>
+                  <li class="rw rw--pin">
+                    <span class="rw__box"><i class="rw__tick"></i></span>
+                    <span class="chip chip--type">拼箱</span>
+                    <span class="rw__name">阿明</span>
+                    <span class="rw__meta">洛杉矶 · 9.22 建单</span>
+                    <span class="rw__right">装箱 <span class="num">9.26</span></span>
+                  </li>
+                  <li class="rw rw--a">
+                    <span class="rw__box"></span>
+                    <span class="chip chip--type">整柜</span>
+                    <span class="rw__name">小陈</span>
+                    <span class="rw__meta">汉堡 · 9.20 建单</span>
+                    <span class="rw__right">开船 <span class="num">9.28</span></span>
+                  </li>
+                  <li class="rw rw--b">
+                    <span class="rw__box"></span>
+                    <span class="chip chip--type">空运</span>
+                    <span class="rw__name">老王</span>
+                    <span class="rw__meta">法兰克福 · 9.15 建单</span>
+                    <span class="rw__right">已到港</span>
+                  </li>
+                  <li class="rw rw--c">
+                    <span class="rw__box"></span>
+                    <span class="chip chip--type">拉报</span>
+                    <span class="rw__name">小张</span>
+                    <span class="rw__meta">圣彼得堡 · 9.24 建单</span>
+                    <span class="rw__right">订舱 <span class="num">9.30</span></span>
+                  </li>
                 </ul>
               </div>
+
               <div class="dm__R">
                 <div class="dm__panehead">阿明 · 拼箱 洛杉矶</div>
                 <div class="dm__cal">
                   <div class="dm__calhead">2026 年 9 月</div>
+                  <div class="dm__calwk"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
                   <div class="dm__calgrid">
-                    <span></span><span></span><span></span><span></span><span>25</span><span>26</span><span>27</span>
-                    <span>28</span><span>29</span><span>30</span><span></span><span></span><span></span><span></span>
+                    <span></span><span></span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+                    <span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span>
+                    <span>13</span><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span>
+                    <span>20</span><span>21</span><span>22</span><span>23</span><span>24</span><span>25</span><span class="cal--pick">26</span>
+                    <span>27</span><span>28</span><span>29</span><span>30</span><span></span><span></span><span></span>
                   </div>
                 </div>
                 <ul class="dm__stages dm__stages--v">
-                  <li class="st">提单号 <span class="num">EGLV••••••</span></li>
-                  <li class="st">订舱 <span class="num">9.20</span></li>
+                  <li class="st st--done">提单号 <span class="num">EGLV••••••</span></li>
+                  <li class="st st--done">订舱 <span class="num">9.20</span></li>
                   <li class="st st--pick">装箱 <span class="num">9.26</span></li>
                   <li class="st">报关</li>
                   <li class="st">开船</li>
@@ -158,11 +137,11 @@
               </div>
             </div>
             <div class="dmcap">
-              <span class="dmcap__i cap-a">① 日历上点好「装箱」的日子</span>
-              <span class="dmcap__i cap-b">② 到期那天：左栏自动置顶，顶部弹提醒条</span>
-              <span class="dmcap__i cap-c">③ 不勾选的话，逾期天数一天天往上加：1 天 → 2 天 → 3 天</span>
-              <span class="dmcap__i cap-d">④ 做完去进度里打 √，确认完成</span>
-              <span class="dmcap__i cap-e">⑤ 打完 √，左栏的置顶和提醒条一起消失</span>
+              <span class="dmcap__i cap-a">① 在日历上点好「装箱」的日子（9 月 26）</span>
+              <span class="dmcap__i cap-b">② 到期那天：左栏自动把这票置顶，顶部弹出提醒条</span>
+              <span class="dmcap__i cap-c">③ 不去勾选，逾期天数就一天天往上加：1 天 → 2 天 → 3 天</span>
+              <span class="dmcap__i cap-d">④ 干完了，去进度里把「装箱」打 √，确认完成</span>
+              <span class="dmcap__i cap-e">⑤ 打完 √，左栏的置顶和提醒条一起消失，这票沉回去</span>
             </div>
           </div>
         </div>
@@ -177,12 +156,12 @@
     </div>
   </section>
 
-  <!-- ============ 03 看船定位 ============ -->
-  <section class="section section--tint" id="d3">
+  <!-- ============ 02 看船定位 ============ -->
+  <section class="section" id="d2">
     <div class="wrap">
       <figure class="demo">
         <figcaption class="demo__cap">
-          <span class="demo__no num">03</span>
+          <span class="demo__no num">02</span>
           <h2 class="demo__title">输入船名/航次，定位自动打开</h2>
         </figcaption>
         <p class="demo__lead">
@@ -192,12 +171,12 @@
 
         <div class="demo__stage">
           <div class="dm">
-            <div class="dm__bar"><span>阿明 · 拼箱 洛杉矶</span><span class="dm__count">进度</span></div>
+            <div class="dm__bar"><span>阿明 · 拼箱 洛杉矶</span><span class="dm__count">定位</span></div>
             <div class="dm__R dm__R--full">
               <ul class="dm__stages dm__stages--v">
-                <li class="st">提单号 <span class="num">EGLV••••••</span></li>
-                <li class="st">订舱 <span class="num">9.20</span></li>
-                <li class="st">装箱 <span class="num">9.26</span></li>
+                <li class="st st--done">提单号 <span class="num">EGLV••••••</span></li>
+                <li class="st st--done">订舱 <span class="num">9.20</span></li>
+                <li class="st st--done">装箱 <span class="num">9.26</span></li>
                 <li class="st st--pick">船名/航次 <span class="typed typed--ship">KMTC DUBAI/2606W</span></li>
                 <li class="st">开船 <span class="num num--est">9.30（估算）</span></li>
                 <li class="st">到港 <span class="num num--est">10.18（估算）</span></li>
@@ -212,13 +191,13 @@
                   <span class="dm__btn2">🔍 HS查询</span>
                 </div>
               </div>
-            </div>
-            <div class="dm__frame">
-              <div class="dm__framehead num">维运网 · 船舶跟踪</div>
-              <div class="dm__ship">
-                <p class="dm__shipname num">KMTC DUBAI</p>
-                <p class="dm__shipvoy num">航次 2606W · 上海 → 洛杉矶</p>
-                <div class="dm__line"><span class="dm__dot"></span></div>
+              <div class="dm__frame">
+                <div class="dm__framehead num">维运网 · 船舶跟踪</div>
+                <div class="dm__ship">
+                  <p class="dm__shipname num">KMTC DUBAI</p>
+                  <p class="dm__shipvoy num">航次 2606W · 上海 → 洛杉矶</p>
+                  <div class="dm__line"><span class="dm__dot"></span></div>
+                </div>
               </div>
             </div>
             <div class="dmcap">
@@ -240,12 +219,12 @@
     </div>
   </section>
 
-  <!-- ============ 04 做费用单 ============ -->
-  <section class="section" id="d4">
+  <!-- ============ 03 做费用单 ============ -->
+  <section class="section section--tint" id="d3">
     <div class="wrap">
       <figure class="demo">
         <figcaption class="demo__cap">
-          <span class="demo__no num">04</span>
+          <span class="demo__no num">03</span>
           <h2 class="demo__title">解决积压，轻松做费用单</h2>
         </figcaption>
         <p class="demo__lead">
@@ -302,12 +281,12 @@
     </div>
   </section>
 
-  <!-- ============ 05 月报 / 合并对账单 ============ -->
-  <section class="section section--tint" id="d5">
+  <!-- ============ 04 月报 / 合并对账单 ============ -->
+  <section class="section" id="d4">
     <div class="wrap">
       <figure class="demo demo--wide">
         <figcaption class="demo__cap">
-          <span class="demo__no num">05</span>
+          <span class="demo__no num">04</span>
           <h2 class="demo__title">搜一个客户，轻松做月报</h2>
         </figcaption>
         <p class="demo__lead">
@@ -323,10 +302,10 @@
                 <div class="dm__search dm__search--on"><span class="typed typed--q">judy</span></div>
                 <div class="dm__drange">建单日期 <span class="num">9.01</span> → <span class="num">9.30</span></div>
                 <ul class="dm__list">
-                  <li class="rw rw--s1"><span class="rw__box"><i class="rw__tick"></i></span><span class="chip chip--type">整柜</span><span class="rw__name">judy</span><span class="rw__right">9.08</span></li>
-                  <li class="rw rw--s2"><span class="rw__box"><i class="rw__tick"></i></span><span class="chip chip--type">拼箱</span><span class="rw__name">judy</span><span class="rw__right">9.15</span></li>
-                  <li class="rw rw--s3"><span class="rw__box"><i class="rw__tick"></i></span><span class="chip chip--type">拉报</span><span class="rw__name">judy</span><span class="rw__right">9.22</span></li>
-                  <li class="rw rw--s4"><span class="rw__box"></span><span class="chip chip--type">空运</span><span class="rw__name">judy</span><span class="rw__right">9.25</span></li>
+                  <li class="rw rw--s1"><span class="rw__box"><i class="rw__tick"></i></span><span class="chip chip--type">整柜</span><span class="rw__name">judy</span><span class="rw__meta">洛杉矶 · 9.08 建单</span><span class="rw__right">9.08</span></li>
+                  <li class="rw rw--s2"><span class="rw__box"><i class="rw__tick"></i></span><span class="chip chip--type">拼箱</span><span class="rw__name">judy</span><span class="rw__meta">汉堡 · 9.15 建单</span><span class="rw__right">9.15</span></li>
+                  <li class="rw rw--s3"><span class="rw__box"><i class="rw__tick"></i></span><span class="chip chip--type">拉报</span><span class="rw__name">judy</span><span class="rw__meta">圣彼得堡 · 9.22 建单</span><span class="rw__right">9.22</span></li>
+                  <li class="rw rw--s4"><span class="rw__box"></span><span class="chip chip--type">空运</span><span class="rw__name">judy</span><span class="rw__meta">法兰克福 · 9.25 建单</span><span class="rw__right">9.25</span></li>
                 </ul>
                 <div class="dm__toolbar">
                   <span class="dm__picked">已选 <b class="counter"><b class="counter__track"><i>0</i><i>1</i><i>2</i><i>3</i></b></b> 票</span>
@@ -375,12 +354,12 @@
     </div>
   </section>
 
-  <!-- ============ 06 日常随笔 ============ -->
-  <section class="section" id="d6">
+  <!-- ============ 05 日常随笔 ============ -->
+  <section class="section section--tint" id="d5">
     <div class="wrap">
       <figure class="demo">
         <figcaption class="demo__cap">
-          <span class="demo__no num">06</span>
+          <span class="demo__no num">05</span>
           <h2 class="demo__title">随心所欲，日常随笔记录</h2>
         </figcaption>
         <p class="demo__lead">
@@ -393,20 +372,22 @@
             <div class="dm__bar"><span>待办</span><span class="dm__count">边打边存</span></div>
             <div class="dm__R dm__R--full">
               <div class="dm__tabs">
-                <span class="tb tb--on">今日待办</span><span class="tb">未来待办</span><span class="tb">日历</span>
+                <span class="tb tb--on">今日待办</span><span class="tb">未来待办</span><span class="tb tb--cal">日历</span>
               </div>
               <ul class="dm__todos">
                 <li class="td td--1">问阿明要柜号 <span class="td__ok">已存</span></li>
                 <li class="td td--2">周四之前把 judy 的对账单发过去 <span class="td__ok">已存</span></li>
                 <li class="td td--3">老王那票报关资料补一份装箱单 <span class="td__ok">已存</span></li>
               </ul>
-              <div class="dm__cursor">｜</div>
               <div class="dm__savehint">✅ 边打边存，不用点保存</div>
               <div class="dm__cal2">
                 <div class="dm__calhead">2026 年 9 月</div>
                 <div class="dm__calgrid">
-                  <span></span><span></span><span></span><span></span><span>25</span><span>26</span><span>27</span>
-                  <span>28</span><span>29</span><span>30</span><span></span><span></span><span></span><span></span>
+                  <span></span><span></span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+                  <span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span>
+                  <span>13</span><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span>
+                  <span>20</span><span>21</span><span>22</span><span>23</span><span>24</span><span>25</span><span>26</span>
+                  <span>27</span><span>28</span><span>29</span><span>30</span><span></span><span></span><span></span>
                 </div>
               </div>
             </div>
@@ -424,60 +405,6 @@
           <li><b>②</b> 杂事都能扔进来</li>
           <li><b>③</b> 边打边存，少一步</li>
           <li><b>④</b> 顺手看日历</li>
-        </ol>
-      </figure>
-    </div>
-  </section>
-
-  <!-- ============ 07 自定义查询网址 ============ -->
-  <section class="section section--tint" id="d7">
-    <div class="wrap">
-      <figure class="demo">
-        <figcaption class="demo__cap">
-          <span class="demo__no num">07</span>
-          <h2 class="demo__title">自定义查询网站，不用再翻网页</h2>
-        </figcaption>
-        <p class="demo__lead">
-          定位那一栏是个万能窗口：船公司官网、航空公司的货物跟踪页，甚至抖音、爱奇艺，
-          <b>网址粘进去就显示</b>；旁边还备了谷歌全球搜索和 HS 编码查询。
-        </p>
-
-        <div class="demo__stage">
-          <div class="dm">
-            <div class="dm__bar"><span>阿明 · 拼箱 洛杉矶</span><span class="dm__count">定位</span></div>
-            <div class="dm__R dm__R--full">
-              <div class="dm__locate">
-                <span class="dm__rlabel">定位 <i>可粘贴船公司 / 航空公司 / 自定义跟踪网址</i></span>
-                <p class="dm__url num"><span class="typed typed--url">https://www.xxx-line.com/track</span></p>
-                <div class="dm__btns">
-                  <span class="dm__btn2">谷歌地图 / 全球搜索</span>
-                  <span class="dm__btn2">🔍 HS查询</span>
-                  <span class="dm__btn2 dm__btn2--press">🪟 浮动窗并排看</span>
-                </div>
-              </div>
-              <div class="dm__frame">
-                <div class="dm__framehead num">船公司官网 · 货物跟踪</div>
-                <div class="dm__ship">
-                  <p class="dm__shipname">某某轮船 货物跟踪</p>
-                  <p class="dm__shipvoy num">提单号 EGLV•••••• · 上海 → 洛杉矶</p>
-                  <div class="dm__line"><span class="dm__dot"></span></div>
-                </div>
-              </div>
-            </div>
-            <div class="dmcap">
-              <span class="dmcap__i cap-a">① 定位栏里粘一个网址，什么都行</span>
-              <span class="dmcap__i cap-b">② 下面的大窗口立刻显示，不用再去翻网页</span>
-              <span class="dmcap__i cap-c">③ 还备着谷歌搜索和 HS 编码查询</span>
-              <span class="dmcap__i cap-d">④ 要并排看就弹成独立小窗</span>
-            </div>
-          </div>
-        </div>
-
-        <ol class="demo__steps">
-          <li><b>①</b> 网址粘进定位栏</li>
-          <li><b>②</b> 大窗口直接显示</li>
-          <li><b>③</b> 谷歌搜索 / HS 查询备着</li>
-          <li><b>④</b> 也能弹独立小窗</li>
         </ol>
       </figure>
     </div>

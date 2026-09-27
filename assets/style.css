@@ -392,10 +392,36 @@ a:hover { color: var(--color-primary); }
 }
 .honest b { color: var(--color-primary); }
 
-/* ---------- 真实界面截图 ---------- */
+/* ---------- 首屏「痛点」 ---------- */
+.pain { margin-top: var(--space-6); max-width: 46em; }
+.pain__title {
+  display: flex; align-items: baseline; gap: var(--space-2);
+  font-size: var(--text-2xl); font-weight: 800; color: var(--color-gray-900);
+}
+.pain__big {
+  font-size: 2.1em; line-height: 1; color: var(--color-accent);
+  text-shadow: 0 2px 0 var(--color-accent-100);
+}
+.pain__bang { font-size: 1.5em; font-weight: 900; color: var(--color-accent); letter-spacing: -0.02em; }
+.pain__list { margin-top: var(--space-5); display: flex; flex-direction: column; gap: var(--space-5); }
+.pain__list li { padding-left: var(--space-4); border-left: 3px solid var(--color-accent-100); }
+.pain__txt { font-size: var(--text-lg); color: var(--color-gray-800); }
+.pain__txt em {
+  font-style: normal; font-weight: 800; font-size: 1.25em;
+  color: var(--color-accent);
+  box-shadow: inset 0 -0.32em 0 var(--color-accent-100);
+  padding: 0 2px;
+}
+.pain__face { font-size: 1.35em; }
+.pain__fix { margin-top: var(--space-2); font-size: var(--text-base); color: var(--color-gray-600); }
+.pain__fix b { color: var(--color-primary); }
+.pain__fix i { font-style: normal; font-weight: 800; color: var(--color-ok); }
+.pain__ok { font-size: 1.15em; }
+
+/* ---------- 真实界面截图（上下排、尽量放大） ---------- */
 .shots {
-  display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
-  gap: var(--space-6); margin-top: var(--space-10); align-items: start;
+  display: grid; grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-8); margin-top: var(--space-10);
 }
 .shot { margin: 0; }
 .shot img {
