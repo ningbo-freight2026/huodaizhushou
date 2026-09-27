@@ -1,0 +1,531 @@
+/* ============================================================
+   动态演示页样式（site/demos.html 专用）
+   三段循环动画：① 到期置顶→勾完沉底 ② 做费用单 ③ 合并对账单
+   纯 CSS 实现，不用 JavaScript；三段统一 10s 一轮，方便统一定格。
+   依赖 assets/style.css 里的设计令牌（--color-* / --space-* / --text-*）。
+   ============================================================ */
+
+/* ============================ 页头 ============================ */
+.demo-head { padding-bottom: 0; }
+.demo-head__title { margin-top: var(--space-3); font-size: var(--text-4xl); color: var(--color-gray-900); }
+.demo-head__lead {
+  margin-top: var(--space-4); max-width: 52em;
+  color: var(--color-gray-600); font-size: var(--text-lg);
+}
+
+/* ============================ 演示卡片外壳 ============================ */
+.demo { margin: 0; }
+.demo__cap { display: flex; align-items: baseline; gap: var(--space-4); }
+.demo__no {
+  color: var(--color-primary-400); font-size: var(--text-lg); font-weight: 800;
+}
+.demo__title { font-size: var(--text-3xl); color: var(--color-gray-900); }
+.demo__lead {
+  margin-top: var(--space-4); max-width: 56em;
+  color: var(--color-gray-600); font-size: var(--text-base);
+}
+
+.demo__stage {
+  position: relative;
+  margin-top: var(--space-8);
+  padding: var(--space-6);
+  min-height: 372px;
+  overflow: hidden;
+  background: linear-gradient(180deg, var(--color-white) 0%, var(--color-gray-50) 100%);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+}
+
+.demo__steps {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-4); margin-top: var(--space-6);
+  counter-reset: none;
+}
+.demo__steps li {
+  padding-top: var(--space-3);
+  border-top: 2px solid var(--color-primary-100);
+  color: var(--color-gray-600); font-size: var(--text-sm);
+}
+.demo__steps b { display: block; color: var(--color-accent); font-size: var(--text-base); }
+
+.demo-foot { text-align: center; }
+.demo-foot__actions { display: flex; flex-wrap: wrap; gap: var(--space-3); justify-content: center; margin-top: var(--space-8); }
+
+/* ============================================================
+   演示一：工作进度看板
+   槽位间距 54px（行高 44 + 间隙 10），初始 C/A/B/D = 0/1/2/3 槽
+   时序：0-22 初始 | 12-20 填日期 | 24-30 提醒条 | 34-50 置顶 | 52-58 打钩
+         | 62-86 沉底 | 78-88 下一个 | 86-95 淡出回位
+   ============================================================ */
+.board {
+  max-width: 640px; margin: 0 auto;
+  background: var(--color-white);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+.board__top {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-primary);
+}
+.board__chip { color: var(--color-white); font-size: var(--text-sm); font-weight: 700; }
+.board__count { color: var(--color-primary-100); font-size: var(--text-xs); }
+
+.alertbar {
+  display: flex; align-items: center; gap: var(--space-2);
+  margin: var(--space-3) var(--space-4) 0;
+  padding: var(--space-2) var(--space-3);
+  height: 34px;
+  border-left: 3px solid var(--color-accent-bright);
+  background: var(--color-accent-100);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  opacity: 0;
+  animation: d1Alert 10s infinite;
+}
+.alertbar__name { font-weight: 700; color: var(--color-gray-800); }
+.alertbar__dest { color: var(--color-gray-600); }
+.alertbar__stage { margin-left: auto; color: var(--color-accent-600); font-weight: 700; }
+
+.board__list { position: relative; height: 206px; margin: var(--space-3) var(--space-4) var(--space-4); }
+
+.jrow {
+  position: absolute; left: 0; right: 0; top: 0;
+  display: flex; align-items: center; gap: var(--space-2);
+  height: 44px; padding: 0 var(--space-3);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-md);
+  background: var(--color-white);
+  font-size: var(--text-xs);
+  animation-duration: 10s; animation-iteration-count: infinite;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+.jrow__box {
+  position: relative; flex: none; width: 14px; height: 14px;
+  border: 1.5px solid var(--color-gray-300); border-radius: var(--radius-sm);
+  background: var(--color-white);
+}
+.jrow__tick {
+  position: absolute; inset: 0;
+  opacity: 0;
+  background:
+    linear-gradient(45deg, transparent 44%, var(--color-white) 44%, var(--color-white) 56%, transparent 56%),
+    linear-gradient(-45deg, transparent 44%, var(--color-white) 44%, var(--color-white) 56%, transparent 56%);
+}
+.jrow__name { flex: none; font-weight: 700; color: var(--color-gray-800); white-space: nowrap; }
+.jrow__meta {
+  flex: 1 1 auto; min-width: 0; color: var(--color-gray-600);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.jrow__right {
+  flex: none; margin-left: auto; white-space: nowrap;
+  color: var(--color-gray-800); font-family: var(--font-num);
+}
+.typed {
+  display: inline-block; inline-size: 4ch;
+  font-family: var(--font-num);
+  clip-path: inset(0 100% 0 0);
+  animation: d1Typed 10s steps(4, end) infinite;
+}
+.nextbadge {
+  position: absolute; right: var(--space-3); top: -9px;
+  padding: 0 var(--space-2);
+  background: var(--color-accent); color: var(--color-white);
+  border-radius: var(--radius-sm);
+  font-size: 10px; font-weight: 700; line-height: 1.6;
+  opacity: 0;
+  animation: d1Next 10s infinite;
+}
+
+/* 各行的槽位变化 */
+.jrow--b { animation-name: slotB, tintB, d1Fade; }
+.jrow--c { animation-name: slotC, d1Fade; }
+.jrow--a { animation-name: slotA, d1Fade; }
+.jrow--d { animation-name: slotD, d1Fade, glowD; }
+.jrow--b .jrow__tick { animation: d1Tick 10s infinite; }
+
+@keyframes slotB {
+  0%, 22%   { transform: translateY(108px); }
+  34%, 50%  { transform: translateY(0); }
+  62%, 86%  { transform: translateY(162px); }
+  93%, 100% { transform: translateY(108px); }
+}
+@keyframes slotC {
+  0%, 22%   { transform: translateY(0); }
+  34%, 50%  { transform: translateY(54px); }
+  62%, 86%  { transform: translateY(0); }
+  93%, 100% { transform: translateY(0); }
+}
+@keyframes slotA {
+  0%, 22%   { transform: translateY(54px); }
+  34%, 50%  { transform: translateY(108px); }
+  62%, 86%  { transform: translateY(54px); }
+  93%, 100% { transform: translateY(54px); }
+}
+@keyframes slotD {
+  0%, 22%   { transform: translateY(162px); }
+  34%, 50%  { transform: translateY(162px); }
+  62%, 86%  { transform: translateY(108px); }
+  93%, 100% { transform: translateY(162px); }
+}
+@keyframes tintB {
+  0%, 23%   { background: var(--color-white); border-color: var(--color-gray-200); }
+  29%, 51%  { background: var(--color-accent-100); border-color: var(--color-accent); }
+  57%, 86%  { background: var(--color-ok-100); border-color: var(--color-ok); }
+  93%, 100% { background: var(--color-white); border-color: var(--color-gray-200); }
+}
+@keyframes d1Tick {
+  0%, 50%   { opacity: 0; }
+  57%, 86%  { opacity: 1; }
+  93%, 100% { opacity: 0; }
+}
+@keyframes d1Typed {
+  0%, 11%   { clip-path: inset(0 100% 0 0); }
+  19%, 89%  { clip-path: inset(0 0 0 0); }
+  93%, 100% { clip-path: inset(0 100% 0 0); }
+}
+@keyframes d1Alert {
+  0%, 23%   { opacity: 0; transform: translateY(-10px); }
+  29%, 86%  { opacity: 1; transform: translateY(0); }
+  91%, 100% { opacity: 0; transform: translateY(-10px); }
+}
+@keyframes d1Fade {
+  0%, 86%   { opacity: 1; }
+  90%       { opacity: 0.1; }
+  94%, 100% { opacity: 1; }
+}
+@keyframes glowD {
+  0%, 76%   { box-shadow: none; }
+  80%, 86%  { box-shadow: 0 0 0 2px var(--color-accent-bright); }
+  92%, 100% { box-shadow: none; }
+}
+@keyframes d1Next {
+  0%, 77%   { opacity: 0; }
+  81%, 86%  { opacity: 1; }
+  92%, 100% { opacity: 0; }
+}
+
+/* ============================================================
+   演示二：费用单
+   时序：0-10 空 | 12-20 / 24-32 / 36-44 三行金额 | 48-56 合计
+         | 58-68 按导出 | 70-86 单据滑入 | 90-97 收回
+   ============================================================ */
+.exp {
+  position: relative; max-width: 640px; margin: 0 auto;
+  background: var(--color-white);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+.exp__top {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-primary);
+}
+.exp__tpl { color: var(--color-white); font-size: var(--text-sm); font-weight: 700; }
+.exp__job { color: var(--color-primary-100); font-size: var(--text-xs); }
+
+.exp__head {
+  display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px dashed var(--color-gray-200);
+}
+.exp__kv { color: var(--color-gray-800); font-size: var(--text-xs); }
+.exp__kv i {
+  margin-right: var(--space-2); font-style: normal; color: var(--color-gray-600);
+}
+
+.exp__tbl { width: 100%; border-collapse: collapse; }
+.exp__tbl th,
+.exp__tbl td {
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--color-gray-200);
+  font-size: var(--text-xs); text-align: left;
+}
+.exp__tbl thead th { background: var(--color-gray-50); color: var(--color-gray-600); font-weight: 700; }
+.exp__tbl td { color: var(--color-gray-800); }
+.exp__tbl td:last-child { font-weight: 700; color: var(--color-primary); }
+
+.exprow__amt {
+  display: inline-block; inline-size: 5ch; text-align: right;
+  clip-path: inset(0 100% 0 0);
+}
+.exprow--1 .exprow__amt { animation: d2Amt1 10s steps(4, end) infinite; }
+.exprow--2 .exprow__amt { animation: d2Amt2 10s steps(4, end) infinite; }
+.exprow--3 .exprow__amt { animation: d2Amt3 10s steps(4, end) infinite; }
+
+@keyframes d2Amt1 {
+  0%, 11%   { clip-path: inset(0 100% 0 0); }
+  19%, 89%  { clip-path: inset(0 0 0 0); }
+  93%, 100% { clip-path: inset(0 100% 0 0); }
+}
+@keyframes d2Amt2 {
+  0%, 23%   { clip-path: inset(0 100% 0 0); }
+  31%, 89%  { clip-path: inset(0 0 0 0); }
+  93%, 100% { clip-path: inset(0 100% 0 0); }
+}
+@keyframes d2Amt3 {
+  0%, 35%   { clip-path: inset(0 100% 0 0); }
+  43%, 89%  { clip-path: inset(0 0 0 0); }
+  93%, 100% { clip-path: inset(0 100% 0 0); }
+}
+
+.exp__sum {
+  display: flex; align-items: center; gap: var(--space-3);
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-primary-50);
+  font-size: var(--text-xs);
+  opacity: 0;
+  animation: d2Sum 10s infinite;
+}
+.exp__sumlabel { font-weight: 700; color: var(--color-primary-600); }
+.exp__sumval { color: var(--color-gray-800); font-weight: 700; }
+.exp__sumval--2 { color: var(--color-accent-600); }
+@keyframes d2Sum {
+  0%, 47%   { opacity: 0; }
+  53%, 89%  { opacity: 1; }
+  93%, 100% { opacity: 0; }
+}
+
+.exp__bar { display: flex; justify-content: flex-end; padding: var(--space-3) var(--space-4); }
+.exp__export { animation: d2Btn 10s infinite; }
+@keyframes d2Btn {
+  0%, 55%   { box-shadow: none; transform: none; }
+  60%       { box-shadow: 0 0 0 4px var(--color-accent-100); transform: translateY(-1px); }
+  64%       { transform: translateY(1px) scale(0.97); }
+  68%, 89%  { box-shadow: 0 0 0 4px var(--color-accent-100); transform: none; }
+  93%, 100% { box-shadow: none; }
+}
+
+.expdoc {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  padding: var(--space-4);
+  background: var(--color-white);
+  border-top: 3px solid var(--color-ok);
+  box-shadow: 0 -10px 24px rgba(18, 58, 92, 0.12);
+  transform: translateY(101%);
+  animation: d2Doc 10s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+.expdoc__title { font-size: var(--text-lg); font-weight: 800; color: var(--color-gray-900); }
+.expdoc__sub { color: var(--color-gray-600); font-size: var(--text-xs); }
+.expdoc__tbl { width: 100%; border-collapse: collapse; margin-top: var(--space-3); }
+.expdoc__tbl td {
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--color-gray-200);
+  font-size: var(--text-xs); color: var(--color-gray-800);
+}
+.expdoc__tbl td:last-child { text-align: right; }
+.expdoc__sum td { background: var(--color-gray-50); font-weight: 700; color: var(--color-primary); }
+.expdoc__file {
+  margin-top: var(--space-3); color: var(--color-ok); font-size: var(--text-xs); font-weight: 700;
+}
+@keyframes d2Doc {
+  0%, 69%   { transform: translateY(101%); }
+  76%, 88%  { transform: translateY(0); }
+  94%, 100% { transform: translateY(101%); }
+}
+
+/* ============================================================
+   演示三：合并对账单
+   时序：0-6 未选 | 10/18/26 依次打钩 | 32-42 计数与按钮 | 46-62 报表滑入
+         | 64-76 合计行 | 78-88 文件名 | 92-98 收回
+   ============================================================ */
+.rpt { position: relative; }
+
+.rpt__toolbar {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-white);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-lg);
+}
+.rpt__pick { color: var(--color-gray-600); font-size: var(--text-sm); }
+.counter {
+  display: inline-block; height: 1.35em; overflow: hidden;
+  vertical-align: bottom; text-align: center;
+}
+.counter__track { display: block; animation: d3Count 10s steps(1, end) infinite; }
+.counter__track i {
+  display: block; height: 1.35em; line-height: 1.35em;
+  font-style: normal; font-family: var(--font-num);
+  font-weight: 800; color: var(--color-accent);
+}
+@keyframes d3Count {
+  0%, 9%    { transform: translateY(0); }
+  10%, 17%  { transform: translateY(-1.35em); }
+  18%, 25%  { transform: translateY(-2.7em); }
+  26%, 88%  { transform: translateY(-4.05em); }
+  93%, 100% { transform: translateY(0); }
+}
+.rpt__btn { animation: d3Btn 10s infinite; }
+@keyframes d3Btn {
+  0%, 29%   { box-shadow: none; transform: none; }
+  34%       { box-shadow: 0 0 0 4px var(--color-accent-100); transform: translateY(-1px); }
+  38%       { transform: translateY(1px) scale(0.97); }
+  42%, 89%  { box-shadow: 0 0 0 4px var(--color-accent-100); transform: none; }
+  94%, 100% { box-shadow: none; }
+}
+
+.rpt__list {
+  display: flex; flex-direction: column; gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+.rrow {
+  display: flex; align-items: center; gap: var(--space-2);
+  padding: var(--space-3);
+  background: var(--color-white);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-md);
+  font-size: var(--text-xs);
+}
+.rrow__name { flex: none; font-weight: 700; color: var(--color-gray-800); white-space: nowrap; }
+.rrow__meta { flex: 1 1 auto; min-width: 0; color: var(--color-gray-600); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rrow__right { flex: none; margin-left: auto; color: var(--color-primary); font-family: var(--font-num); font-weight: 700; }
+/* ★ 勾选动画只认前三票：别写成 .rrow .jrow__tick，否则第 4 票（不该勾）也会跟着动 */
+.rrow--1 .jrow__tick { animation: d3Tick1 10s infinite; }
+.rrow--2 .jrow__tick { animation: d3Tick2 10s infinite; }
+.rrow--3 .jrow__tick { animation: d3Tick3 10s infinite; }
+.rrow--1 .jrow__box { animation: d3Box1 10s infinite; }
+.rrow--2 .jrow__box { animation: d3Box2 10s infinite; }
+.rrow--3 .jrow__box { animation: d3Box3 10s infinite; }
+
+/* ★ 逐票打钩必须每行各写一套关键帧：用 animation-delay 错开相位会把"结尾复位"也一起挪走，
+   结果第 3 票的钩在 7.7s 就消失（早于整段复位），narrative 就断了。 */
+@keyframes d3Tick1 {
+  0%, 6%    { opacity: 0; }
+  10%, 88%  { opacity: 1; }
+  93%, 100% { opacity: 0; }
+}
+@keyframes d3Tick2 {
+  0%, 14%   { opacity: 0; }
+  18%, 88%  { opacity: 1; }
+  93%, 100% { opacity: 0; }
+}
+@keyframes d3Tick3 {
+  0%, 22%   { opacity: 0; }
+  26%, 88%  { opacity: 1; }
+  93%, 100% { opacity: 0; }
+}
+@keyframes d3Box1 {
+  0%, 6%    { background-color: var(--color-white); border-color: var(--color-gray-300); }
+  10%, 88%  { background-color: var(--color-ok); border-color: var(--color-ok); }
+  93%, 100% { background-color: var(--color-white); border-color: var(--color-gray-300); }
+}
+@keyframes d3Box2 {
+  0%, 14%   { background-color: var(--color-white); border-color: var(--color-gray-300); }
+  18%, 88%  { background-color: var(--color-ok); border-color: var(--color-ok); }
+  93%, 100% { background-color: var(--color-white); border-color: var(--color-gray-300); }
+}
+@keyframes d3Box3 {
+  0%, 22%   { background-color: var(--color-white); border-color: var(--color-gray-300); }
+  26%, 88%  { background-color: var(--color-ok); border-color: var(--color-ok); }
+  93%, 100% { background-color: var(--color-white); border-color: var(--color-gray-300); }
+}
+
+.rdoc {
+  position: absolute; inset: 0;
+  padding: var(--space-6);
+  background: var(--color-white);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  transform: translateY(6%);
+  animation: d3Doc 10s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+@keyframes d3Doc {
+  0%, 45%   { opacity: 0; transform: translateY(6%); }
+  53%, 90%  { opacity: 1; transform: translateY(0); }
+  97%, 100% { opacity: 0; transform: translateY(6%); }
+}
+.rdoc__title {
+  font-size: var(--text-xl); font-weight: 800; color: var(--color-gray-900);
+  padding-bottom: var(--space-2); border-bottom: 2px solid var(--color-gray-900);
+}
+.rdoc__tbl { width: 100%; border-collapse: collapse; margin-top: var(--space-3); }
+.rdoc__tbl th,
+.rdoc__tbl td {
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--color-gray-300);
+  font-size: 11px; text-align: left; white-space: nowrap;
+}
+.rdoc__tbl thead th { background: var(--color-gray-900); color: var(--color-white); font-weight: 700; }
+.rdoc__tbl td { color: var(--color-gray-800); }
+.rdoc__sum td { background: var(--color-primary-50); font-weight: 700; color: var(--color-primary); }
+.rdoc__sum { animation: d3Sumrow 10s infinite; }
+@keyframes d3Sumrow {
+  0%, 63%   { opacity: 0; }
+  69%, 90%  { opacity: 1; }
+  96%, 100% { opacity: 0; }
+}
+.rdoc__file {
+  margin-top: var(--space-3); color: var(--color-ok); font-size: var(--text-xs); font-weight: 700;
+  animation: d3File 10s infinite;
+}
+@keyframes d3File {
+  0%, 79%   { opacity: 0; }
+  84%, 90%  { opacity: 1; }
+  95%, 100% { opacity: 0; }
+}
+
+/* 宽表在窄屏上整体缩小，保证 10 列都看得见（不靠横向滚动） */
+.rdoc__fit { width: 100%; }
+@media (max-width: 900px) {
+  .rdoc__fit { transform: scale(0.72); transform-origin: 0 0; width: 138.9%; }
+}
+@media (max-width: 560px) {
+  .rdoc__fit { transform: scale(0.52); transform-origin: 0 0; width: 192.3%; }
+}
+
+/* ============================ 响应式 ============================ */
+@media (max-width: 900px) {
+  .demo__steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .demo__stage { padding: var(--space-4); min-height: 340px; }
+  .demo__title { font-size: var(--text-2xl); }
+}
+@media (max-width: 560px) {
+  .demo-head__title { font-size: var(--text-3xl); }
+  .demo__steps { grid-template-columns: minmax(0, 1fr); }
+  .demo__stage { min-height: 320px; padding: var(--space-3); }
+  .jrow, .rrow { font-size: 11px; }
+  .jrow__meta { display: none; }
+  .demo__lead { font-size: var(--text-sm); }
+  .rdoc { padding: var(--space-3); }
+}
+
+/* ============================ 无障碍：关掉动画时定格在"有信息的那一帧" ============================ */
+@media (prefers-reduced-motion: reduce) {
+  .demo__stage * { animation: none !important; }
+
+  /* 演示一定格在"已置顶、已打钩"的状态 */
+  .jrow--b { transform: translateY(0); background: var(--color-ok-100); border-color: var(--color-ok); }
+  .jrow--c { transform: translateY(54px); }
+  .jrow--a { transform: translateY(108px); }
+  .jrow--d { transform: translateY(162px); }
+  .jrow--b .jrow__tick { opacity: 1; }
+  .jrow--b .jrow__box { background-color: var(--color-ok); border-color: var(--color-ok); }
+  .typed { clip-path: none; }
+  .alertbar { opacity: 1; transform: none; }
+  .nextbadge { opacity: 0; }
+  .jrow--d { box-shadow: none; }
+
+  /* 演示二定格在"金额与合计都填好"的状态 */
+  .exprow__amt { clip-path: none; }
+  .exp__sum { opacity: 1; }
+  .expdoc { transform: translateY(101%); }
+
+  /* 演示三定格在"对账单已生成"的状态 */
+  .rrow--1 .jrow__tick,
+  .rrow--2 .jrow__tick,
+  .rrow--3 .jrow__tick { opacity: 1; }
+  .rrow--1 .jrow__box,
+  .rrow--2 .jrow__box,
+  .rrow--3 .jrow__box { background: var(--color-ok); border-color: var(--color-ok); }
+  .counter__track { transform: translateY(-4.05em); }
+  .rdoc { opacity: 1; transform: none; }
+  .rdoc__sum, .rdoc__file { opacity: 1; }
+}

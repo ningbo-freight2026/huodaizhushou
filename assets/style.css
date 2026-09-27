@@ -392,6 +392,100 @@ a:hover { color: var(--color-primary); }
 }
 .honest b { color: var(--color-primary); }
 
+/* ---------- 小标题（区块内的二级标题） ---------- */
+.block-title {
+  margin-top: var(--space-12);
+  font-size: var(--text-xl);
+  color: var(--color-gray-900);
+}
+
+/* ---------- 价格表 ---------- */
+.price {
+  width: 100%;
+  max-width: 620px;
+  margin-top: var(--space-6);
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--color-white);
+}
+.price th,
+.price td {
+  padding: var(--space-3) var(--space-5);
+  text-align: left;
+  border-bottom: 1px solid var(--color-gray-200);
+  font-size: var(--text-base);
+}
+.price thead th {
+  background: var(--color-primary-50);
+  color: var(--color-primary-600);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.price tbody th {
+  color: var(--color-gray-900);
+  font-weight: 700;
+  white-space: nowrap;
+}
+.price td { color: var(--color-gray-600); font-family: var(--font-num); }
+.price td b {
+  color: var(--color-primary);
+  font-size: var(--text-xl);
+  font-weight: 800;
+}
+.price tbody tr:last-child th,
+.price tbody tr:last-child td { border-bottom: 0; }
+.price tr.is-best { background: var(--color-accent-100); }
+.price tr.is-best th { color: var(--color-gray-900); }
+.price tr.is-best td b { color: var(--color-accent-600); }
+.tag {
+  display: inline-block;
+  margin-left: var(--space-2);
+  padding: 1px var(--space-2);
+  border-radius: var(--radius-sm);
+  background: var(--color-accent);
+  color: var(--color-white);
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  vertical-align: middle;
+}
+.price-note {
+  margin-top: var(--space-3);
+  max-width: 60em;
+  color: var(--color-gray-600);
+  font-size: var(--text-sm);
+}
+
+/* ---------- 免费额度三条 ---------- */
+.credits {
+  margin-top: var(--space-6);
+  max-width: 62em;
+  padding-left: var(--space-6);
+  list-style: decimal;
+}
+.credits li {
+  margin-bottom: var(--space-3);
+  padding-left: var(--space-2);
+  color: var(--color-gray-600);
+  font-size: var(--text-base);
+}
+.credits li::marker { color: var(--color-accent); font-weight: 800; }
+.credits li b { color: var(--color-gray-900); }
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* ---------- FAQ ---------- */
 .faq { margin-top: var(--space-12); display: flex; flex-direction: column; gap: var(--space-3); }
 .faq details {
