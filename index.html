@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>货代业务全能辅助小工具 — 船位跟踪 · 工作进度看板 · 费用单与对账单</title>
+<meta name="description" content="给货代业务员用的桌面软件：输入船名自动跟踪船位、到离港提醒、每天邮件播报；工作进度看板一票一行；6 类费用单模板一键导出 Excel 与合并对账单。数据存在你自己电脑里，60 天全功能免费试用。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23123A5C'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%23D8552B'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="./assets/style.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">跳到主要内容</a>
+
+<header class="topbar">
+  <div class="wrap topbar__inner">
+    <a class="brand" href="#top">
+      <span class="brand__mark" aria-hidden="true"></span>
+      <span class="brand__name">货代业务全能辅助小工具</span>
+    </a>
+    <nav class="nav" aria-label="页面导航">
+      <a href="#features">功能</a>
+      <a href="#how">怎么用</a>
+      <a href="#license">试用与授权</a>
+      <a href="#faq">常见问题</a>
+    </nav>
+    <a class="btn btn--primary btn--sm" href="#contact">联系我</a>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ============ 首屏 ============ -->
+  <section class="hero" id="top">
+    <div class="wrap hero__grid">
+      <div class="hero__copy">
+        <p class="eyebrow">桌面软件 · 数据存本地 · 60 天全功能免费试用</p>
+        <h1>船到哪了、哪票该催、<br>这单费用做了没——<span class="hl">一个软件全管住</span></h1>
+        <p class="lead">
+          货代业务全能辅助小工具，把「查船、跟单、做费用单」三件事放在一张表里。
+          输入船名就自动跟船位、到港离港发提醒、每天定时邮件播报；
+          一票工作单一行，逾期和待办自己浮上来；费用单照着模板填，一键导出 Excel。
+        </p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="#contact">要一份 60 天试用版</a>
+          <a class="btn btn--ghost" href="#features">先看功能清单</a>
+        </div>
+        <ul class="facts" aria-label="产品要点">
+          <li><b>30</b> 分钟拉一次船位</li>
+          <li><b>6</b> 类费用单模板</li>
+          <li><b>0</b> 元试用 60 天</li>
+        </ul>
+      </div>
+
+      <!-- 界面示意：纯 CSS 绘制，数字与客户名均为占位 -->
+      <div class="hero__shot" role="img" aria-label="工作进度看板界面示意：左侧是一票一行的客户工作单，顶部有逾期提醒条；右侧是一票单子的进度打钩表，含提单号、订舱、装箱、报关、开船、到港、付款。">
+        <div class="mock">
+          <div class="mock__bar">
+            <span class="mock__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="mock__title">工作进度看板</span>
+          </div>
+          <div class="mock__body">
+            <div class="mock__toolbar">
+              <span class="mock__field">搜客户 / 提单号 / 目的港</span>
+              <span class="mock__field mock__field--sm">建单日期 9.01 → 9.27</span>
+            </div>
+
+            <div class="mock__alert">
+              <span class="chip chip--warn">整柜</span>
+              <span class="mock__alert-name">示例客户A</span>
+              <span class="mock__alert-dest">洛杉矶</span>
+              <span class="mock__alert-stage">开船（逾期 3 天）</span>
+            </div>
+
+            <ul class="mock__rows">
+              <li class="mock__row is-pinned">
+                <span class="pin" aria-hidden="true"></span>
+                <span class="chip chip--type">拼箱</span>
+                <span class="mock__name">示例客户B</span>
+                <span class="mock__meta">圣彼得堡 · 9.22 建单</span>
+                <span class="mock__right">装箱 9.24</span>
+              </li>
+              <li class="mock__row">
+                <span class="chip chip--type">整柜</span>
+                <span class="mock__name">示例客户C</span>
+                <span class="mock__meta">汉堡 · 9.20 建单</span>
+                <span class="mock__right">开船 9.28</span>
+              </li>
+              <li class="mock__row is-done">
+                <span class="chip chip--type">空运</span>
+                <span class="mock__name">示例客户D</span>
+                <span class="mock__meta">法兰克福 · 9.15 建单</span>
+                <span class="mock__right">已到港</span>
+              </li>
+            </ul>
+
+            <div class="mock__detail">
+              <p class="mock__detail-head">示例客户B · 拼箱 圣彼得堡</p>
+              <ul class="stages">
+                <li class="is-done">提单号 <span class="num">EGLV••••••••</span></li>
+                <li class="is-done">订舱 <span class="num">9.22</span></li>
+                <li class="is-done">装箱 <span class="num">9.24</span></li>
+                <li class="is-now">报关</li>
+                <li>开船</li>
+                <li>到港</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="shipcard" aria-hidden="true">
+          <p class="shipcard__name num">MV OCEAN STAR</p>
+          <p class="shipcard__voy num">航次 2609E · MMSI 413••••••</p>
+          <p class="shipcard__route">上海 <span aria-hidden="true">→</span> 洛杉矶</p>
+          <p class="shipcard__pos">位置更新于 12 分钟前 · 航行中</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 功能 ============ -->
+  <section class="section" id="features">
+    <div class="wrap">
+      <h2 class="section__title">它替你盯住三件事</h2>
+      <p class="section__sub">查船、跟单、做单。不用再在几个网站和一堆表格之间来回切。</p>
+
+      <div class="cards">
+        <article class="card">
+          <h3><span class="card__no num">01</span>船位自己会送上门</h3>
+          <p>把常用的船录进去（输入船名自动带出 MMSI），系统每 30 分钟更新一次船位和航次信息；临近目的港、靠港、离港都会被记下来，可以在页面上看，也可以让它每天定时发邮件播报给你。</p>
+          <p class="card__note">船位来自公开 AIS 数据源，免费、不用另外申请账号。</p>
+        </article>
+
+        <article class="card">
+          <h3><span class="card__no num">02</span>一票一行，谁拖了一目了然</h3>
+          <p>每票工作单就是一行：客户、目的港、建单日期、开船时间排在一行里读；进度点按票打钩，填了日期的自动顶到前面。逾期和「必须完成」的单子单独成组靠上摆，还配一条提醒条自动翻页。</p>
+          <p class="card__note">支持按建单日期区间筛选、按类别（拼箱 / 整柜 / 空运 / 双清 / 拉报 / 进口）过滤、按客户或提单号搜索。</p>
+        </article>
+
+        <article class="card">
+          <h3><span class="card__no num">03</span>费用单、对账单，直接出 Excel</h3>
+          <p>软件自带 6 张基础费用单模板（拼箱 / 整柜 20GP / 整柜 40HQ / 空运 / 拉报 / 双清，另有进口清关）。填完点导出就是一张排好版、带边框和公式的 Excel；勾选几票，还能合并成一张对账单。</p>
+          <p class="card__note">也能上传你自己公司的那张费用单当模板，抬头字段会自动认。</p>
+        </article>
+
+        <article class="card">
+          <h3><span class="card__no num">04</span>定位窗一点就开</h3>
+          <p>每票单子配一个定位栏，填了船名航次就自动生成定位链接，旁边四个按钮直达：自定义跟踪窗口、船讯网轨迹、谷歌全球搜索、HS 编码查询。定位页可以嵌在软件里看，也可以弹成独立小窗并排摆。</p>
+        </article>
+
+        <article class="card">
+          <h3><span class="card__no num">05</span>还有待办、日历和备注</h3>
+          <p>今日待办、未来待办、日历三合一，边打字边存；每票单子下面有备注栏，随手记的东西自动保存，字号、颜色跟单子上的其他信息统一。</p>
+        </article>
+
+        <article class="card">
+          <h3><span class="card__no num">06</span>数据在自己电脑里</h3>
+          <p>单据、报价、成本、客户名单、备注都存你这台电脑（默认放 D 盘），软件里一键「数据导出」就是一个完整备份文件，随时能导回来。卸载软件也不会删数据。</p>
+          <p class="card__note">没有网络也能录入、编辑、查看、导出。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 怎么用 ============ -->
+  <section class="section section--tint" id="how">
+    <div class="wrap">
+      <h2 class="section__title">拿到就能用，三步</h2>
+      <ol class="steps">
+        <li class="step">
+          <h3>装上，打开</h3>
+          <p>发你一个安装包（或免安装的压缩包，解压到 U 盘也能用）。装好打开，自己设一个访问密码——密码只存在你电脑上，我这边看不到。</p>
+        </li>
+        <li class="step">
+          <h3>60 天全功能试用</h3>
+          <p>打开就是空的，直接建你自己的第一票生意，模板库里 6 张费用单模板选一张就能做单。前 51 天完全不打扰你。</p>
+        </li>
+        <li class="step">
+          <h3>到期要续，找我拿授权码</h3>
+          <p>点顶栏「填授权码激活」，把里面的机器码发我，我签一张授权码给你，粘回去回车就行。授权绑你这台电脑，续期只延不缩，提前发也没关系。</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ 试用与授权 ============ -->
+  <section class="section" id="license">
+    <div class="wrap">
+      <h2 class="section__title">关于试用和授权，先把话说清楚</h2>
+      <div class="terms">
+        <div class="term">
+          <h3>60 天，全功能</h3>
+          <p>装好当天开始算，不用先找我。功能一样不缺，不是阉割版。</p>
+        </div>
+        <div class="term">
+          <h3>到期不会锁死</h3>
+          <p>试用到期后多给几天宽限，再之后变成<b>只读</b>：能看、能导出，不会打不开、也不会天天弹窗。数据一个字都不会少。</p>
+        </div>
+        <div class="term">
+          <h3>一机一码</h3>
+          <p>授权码绑你这台电脑，换电脑把新机器码发我重签一张就行，旧码不会外泄。</p>
+        </div>
+        <div class="term">
+          <h3>断网照常用</h3>
+          <p>录入、编辑、查看、导费用单、导出备份都不需要联网。只有查船位和首次激活需要网络。</p>
+        </div>
+      </div>
+      <p class="honest">
+        <b>一句实话：</b>你的工作单、价格、客户名单都在你自己电脑里，我拿不到。
+        不过查船位时船名和 MMSI 会经过我的服务器——所以我不敢说「我什么都看不到」，
+        能说的只是：我拿不到你的客户和价格。
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ 常见问题 ============ -->
+  <section class="section section--tint" id="faq">
+    <div class="wrap">
+      <h2 class="section__title">常见问题</h2>
+      <div class="faq">
+        <details>
+          <summary>装的时候杀毒软件报毒 / 拦截，怎么办？</summary>
+          <p>360 这类软件对没买数字签名的个人小软件都会提示一下，属于误报。安装时如果弹窗拦 DLL，选「允许本次操作」；比较稳妥的做法是先退出 360 再装，装完再打开。压缩包里配了一份《安装遇到 360 拦截怎么办》，照着点就行。实在装不上，我另给一个免安装版，解压就能用。</p>
+        </details>
+        <details>
+          <summary>我的单据、客户、报价会被你看到吗？</summary>
+          <p>看不到。这些数据全部存在你电脑的本地文件里，不上传。软件里「数据导出」给你的是本地 JSON 文件，你想存 U 盘、网盘都行。查船位时只有船名和 MMSI 会经过我的服务器，客户名和价格不会。</p>
+        </details>
+        <details>
+          <summary>断网了还能用吗？工厂内网没外网行不行？</summary>
+          <p>能。录入工作单、打进度钩、做费用单、导出 Excel、导出备份都不联网。只有「查船位」和「首次激活授权」需要联网；没有外网时船位那块不开花，其余功能照旧。</p>
+        </details>
+        <details>
+          <summary>60 天到了没续，数据会丢吗？</summary>
+          <p>不会。到期只是转成只读模式——照样能打开、能看、能导费用单和备份，只是不能改动。什么时候续上都行，数据一直在。卸载软件也不会删数据。</p>
+        </details>
+        <details>
+          <summary>换电脑、重装系统怎么办？</summary>
+          <p>先在新电脑上装好，把新电脑的机器码发我重签一张授权码（旧的自动失效，不用管）。数据搬家用软件里的「数据导出」存成一个文件，新电脑上「数据导入」装回去，导入前软件会自己留一份底。</p>
+        </details>
+        <details>
+          <summary>访问密码忘了？</summary>
+          <p>不用找我。打开数据文件夹（多数电脑在 <span class="num">D:\货代工作进度数据</span>，老机器在「文档\货代工作进度数据」），把里面的 <span class="num">settings.json</span> 复制一份留底、再删掉它，重开软件会让你重新设一个密码，数据一条不少。</p>
+        </details>
+        <details>
+          <summary>费用单模板能改成我们公司自己的吗？</summary>
+          <p>能。软件里的模板点「下载原件」，在你自己的 Excel 里改好版式和抬头，再「重新上传」，同名就是覆盖更新、编号不变，改个文件名就是另存一张新的。常用的费目、币种、公式都能照你公司的习惯来。</p>
+        </details>
+        <details>
+          <summary>怎么收费？一台电脑一个价吗？</summary>
+          <p>按年授权，具体档位（一年 / 三年、几台电脑）微信或邮件问我就行，我会按你的单量给个合适的价。</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 联系 ============ -->
+  <section class="section contact" id="contact">
+    <div class="wrap contact__inner">
+      <h2>想试试？发个消息给我</h2>
+      <p class="contact__lead">我发你一个试用版安装包，装上就能用 60 天，不用先付钱。</p>
+      <div class="contact__methods">
+        <a class="contact__item" href="mailto:575819282@qq.com">
+          <span class="contact__label">邮箱</span>
+          <span class="contact__value num">575819282@qq.com</span>
+        </a>
+        <div class="contact__item">
+          <span class="contact__label">微信</span>
+          <span class="contact__value num">huodaizhushou2026</span>
+          <span class="contact__hint">或搜索 575819282</span>
+        </div>
+      </div>
+      <p class="contact__hint-line">软件里也能看到这两个联系方式，装好后随时找得到我。</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap footer__inner">
+    <p class="footer__name">货代业务全能辅助小工具</p>
+    <p class="footer__note">
+      船位与航次信息来自公开 AIS 数据源，可能有一定延迟，仅供业务参考，不作为法律或业务依据。
+      「工作进度看板」是本软件的模块名。
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
